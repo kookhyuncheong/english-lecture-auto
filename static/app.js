@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Supabase 클라이언트 초기화
+    const SUPABASE_URL = 'https://qlztpnzhfjxljdrmzvis.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsenRwbnpoZmp4bGpkcm16dmlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MDkyMTQsImV4cCI6MjA5OTE4NTIxNH0.vaH9bLC62CjDipcc2szv39sUDjEH-tCusK5DVKWilag';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     // ==========================================================================
     // DOM 요소 선택
     // ==========================================================================
@@ -51,11 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     async function init() {
         try {
-            const response = await fetch('/processed/01_motivation/analysis.json?v=' + new Date().getTime());
-            if (!response.ok) {
-                throw new Error("분석 데이터 파일을 불러오지 못했습니다.");
-            }
-            lectureData = await response.json();
+            // 1. Supabase에서 문장 목록 가져오기
+            const { data: sentences, error: sError } = await supabaseClient
+                .from('sentence')
+                .select('*')
+                .order('index', { ascending: true });
+            
+            if (sError) throw sError;
+
+            // 2. Supabase에서 단어 목록 가져오기
+            const { data: globalVocabs, error: vError } = await supabaseClient
+                .from('vocab')
+                .select('*');
+            
+            if (vError) throw vError;
+
+            // 3. 기존 코드와의 호환성을 위해 lectureData 구조로 매핑
+            lectureData = {
+                title: "동기 부여의 두 가지 유형",
+                sentences: sentences || [],
+                global_vocab_list: globalVocabs || []
+            };
             
             // global_vocab_list에서 vocab_8 (an end in itself)을 찾아서 OALD 스펙으로 보강
             if (lectureData && lectureData.global_vocab_list) {

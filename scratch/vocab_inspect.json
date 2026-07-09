@@ -1,0 +1,45 @@
+[
+  {
+    "id": "vocab_1",
+    "word": "aspire",
+    "target_phrase": "aspired to be",
+    "base_word": "aspire",
+    "level": "C1",
+    "meaning": "열망하다",
+    "english_definition": "to have a strong desire to achieve or to become something",
+    "english_definition_translation": "무언가를 성취하거나 무언가가 되고자 하는 강한 열망을 가지다",
+    "patterns": [
+      {
+        "pattern": "aspire (to something)",
+        "pattern_translation": "~을 열망하다",
+        "examples": [
+          {
+            "eng": "She aspired to a scientific career.",
+            "kor": "그녀는 과학자로서의 커리어를 간절히 바랐다."
+          }
+        ]
+      },
+      {
+        "pattern": "aspire to be/do something",
+        "pattern_translation": "~이 되기를/하기를 열망하다",
+        "examples": [
+          {
+            "eng": "He aspired to be their next leader.",
+            "kor": "그는 그들의 차기 리더가 되기를 열망했다."
+          }
+        ]
+      }
+    ],
+    "sentence_index": 1,
+    "sentence_text": "You've always aspired to be a professional artist.",
+    "explanation": "이 문장에서는 'aspire to be' 패턴이 쓰여 전문 예술가가 되고자 했던 주인공의 간절한 바람을 나타냅니다. 단순히 원하다(want)보다 훨씬 강하고 지향적인 느낌을 주는 고급 어휘입니다.",
+    "ab_dialogue": {
+      "situation": "친구와의 일상 대화",
+      "dialogue_a": "I've always aspired to be a successful entrepreneur.",
+      "dialogue_b": "That's a great goal! I'm sure you'll achieve it.",
+      "translation_a": "나는 항상 성공적인 기업가가 되기를 열망해왔어.",
+      "translation_b": "정말 멋진 목표다! 분명 이룰 거야.",
+      "audio_path": "/processed/01_motivation/audio/vocab_dialogue_vocab_1.wav"
+    }
+  }
+]
