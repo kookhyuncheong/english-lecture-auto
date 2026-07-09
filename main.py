@@ -25,7 +25,7 @@ async def get_index():
 # 동영상 내 시각 탐색(Seek) 및 순간이동 기능이 끊김 없이 매끄럽게 작동합니다.
 @app.get("/video")
 async def get_video():
-    video_path = "01. How to get motivated even when you don't feel like it.mp4"
+    video_path = os.path.join("static", "video.mp4")
     if not os.path.exists(video_path):
         return {"error": f"비디오 파일 '{video_path}'을 찾을 수 없습니다."}
     return FileResponse(video_path)
