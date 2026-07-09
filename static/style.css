@@ -1,0 +1,686 @@
+/* ==========================================================================
+   Design Tokens & Variables (Cream / Ink Theme)
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --w1: #d99a2b; /* Yellow/Amber sticker & tag */
+    --w2: #1f8a82; /* Cyan/Teal */
+    --w3: #c0445b; /* Pink/Ruby */
+    --w4: #3f8a3f; /* Green */
+    --w5: #7a5bd0; /* Purple/Violet */
+    
+    --ink: #1d1a17;    /* Major text & headings (soft dark ink) */
+    --ink2: #56504a;   /* Subtext & translation (warm dark grey) */
+    --ink3: #7d756b;   /* Muted texts */
+    --cream: #f7f2ea;  /* Cream background color */
+    
+    --green: #2f9e57;  /* Successful status/grading */
+    --red: #cf5a5a;    /* Failed/incorrect status */
+    --line: #e2d7c4;   /* Warm border line */
+    
+    /* Animation & Transitions */
+    --transition-smooth: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Global Reset & Settings
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    background: #000000;
+    font-family: Verdana, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   16:9 Theatre Stage Layout
+   ========================================================================== */
+.stage {
+    position: relative;
+    width: 100vw;
+    height: 56.25vw; /* 16:9 Aspect Ratio */
+    max-height: 100vh;
+    max-width: 177.78vh; /* Keeps 16:9 aspect ratio bounding box */
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--cream);
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+}
+
+.stage video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent 40%);
+}
+
+/* ==========================================================================
+   Step Navigation FAB & Dropdown
+   ========================================================================== */
+.pfab {
+    position: absolute;
+    right: 3%;
+    top: 3.5%;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.pfab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f5fa5;
+    background: rgba(255, 253, 250, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid #bcd2ea;
+    border-radius: 999px;
+    padding: 10px 18px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(40, 30, 10, 0.15);
+    transition: var(--transition-smooth);
+}
+
+.pfab-btn:hover {
+    border-color: #1f5fa5;
+    background: #ffffff;
+}
+
+.pfab-ic {
+    font-size: 11px;
+    transition: transform 0.2s ease;
+}
+
+/* Open states */
+.pfab.open .pfab-ic, .pfab:hover .pfab-ic {
+    transform: rotate(180deg);
+}
+
+.pmenu {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 8px;
+    background: rgba(255, 253, 250, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(40, 30, 10, 0.18);
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+    transform-origin: top right;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.pfab.open .pmenu, .pfab:hover .pmenu {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+.pstep {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 8px 16px 8px 12px;
+    border-radius: 9px;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.pstep .pdot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cdbfa8;
+    transition: var(--transition-smooth);
+}
+
+.pstep .plabel {
+    font-size: 13px;
+    color: var(--ink2);
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.pstep:hover {
+    background: #f2f7fc;
+}
+
+.pstep.sel {
+    background: #eaf2fb;
+}
+
+.pstep.sel .pdot {
+    background: #1f5fa5;
+    transform: scale(1.25);
+}
+
+.pstep.sel .plabel {
+    color: #1f5fa5;
+    font-weight: 700;
+}
+
+.pstep.done .pdot {
+    background: #8fb4dd;
+}
+
+/* ==========================================================================
+   Left Subtitle Card (Glassmorphism)
+   ========================================================================== */
+.left {
+    position: absolute;
+    left: 5.5%;
+    bottom: 8%;
+    width: 48%;
+    color: var(--ink);
+    padding: 1.6vw 2vw;
+    border-radius: 16px;
+    background: rgba(252, 248, 240, 0.62);
+    backdrop-filter: blur(22px) saturate(1.2);
+    -webkit-backdrop-filter: blur(22px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 12px 40px rgba(40, 30, 10, 0.2);
+    z-index: 20;
+    transition: var(--transition-smooth);
+}
+
+.num {
+    font-family: "Limelight", Georgia, serif;
+    font-size: 1.1vw;
+    letter-spacing: 0.12em;
+    color: var(--ink3);
+    margin-bottom: 0.4em;
+}
+
+.s-en {
+    font-family: "Limelight", Georgia, serif;
+    font-size: 1.95vw;
+    line-height: 1.35;
+    color: var(--ink);
+}
+
+.s-en .hl {
+    cursor: pointer;
+    transition: border-bottom 0.15s ease;
+    border-bottom: 2px dashed transparent;
+}
+
+.s-en .hl:hover {
+    border-bottom-color: currentColor;
+}
+
+.s-en .hl-split {
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, var(--c1) 50%, var(--c2) 50%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.s-ko {
+    font-size: 1.05vw;
+    line-height: 1.5;
+    color: var(--ink2);
+    margin-top: 0.6em;
+    font-weight: 500;
+}
+
+.rule {
+    height: 0;
+    border-top: 1px dashed var(--line);
+    margin: 0.85em 0 0.75em;
+}
+
+.chunk {
+    font-size: 0.9vw;
+    line-height: 1.55;
+}
+
+.chunk .row {
+    margin-top: 0.2em;
+}
+
+.chunk .cen {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.chunk .cko {
+    color: var(--ink3);
+    font-size: 0.85vw;
+}
+
+/* ==========================================================================
+   Right Vocabulary Card & Note Section
+   ========================================================================== */
+.note {
+    position: absolute;
+    right: 4%;
+    bottom: 8%;
+    width: 40%;
+    max-width: 540px;
+    display: none;
+    flex-direction: column;
+    gap: 0.85vw;
+    z-index: 20;
+}
+
+.note.on {
+    display: flex;
+}
+
+.wnote {
+    position: relative;
+    border-radius: 12px;
+    background: rgba(252, 248, 240, 0.62);
+    backdrop-filter: blur(22px) saturate(1.2);
+    -webkit-backdrop-filter: blur(22px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 12px 40px rgba(40, 30, 10, 0.2);
+    padding: 1.2vw 1.5vw 1.3vw;
+    border-top: 5px solid var(--w1);
+    transition: var(--transition-smooth);
+}
+
+.wnote.hidden {
+    display: none;
+}
+
+/* Sticker/Tape Decoration */
+.wnote::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+    width: 65px;
+    height: 17px;
+    background: color-mix(in srgb, var(--sticker, #d99a2b) 45%, transparent);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.note .tag {
+    font-size: 0.65vw;
+    color: var(--w1);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.note .hwline {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+    margin-top: 0.25em;
+}
+
+.note .hw {
+    font-family: "Limelight", Georgia, serif;
+    font-size: 1.4vw;
+    color: var(--ink);
+}
+
+.note .meta {
+    font-size: 0.72vw;
+    color: var(--ink3);
+}
+
+.note .pat-hw {
+    font-family: "Limelight", Georgia, serif;
+    font-size: 1.15vw;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.note .gloss {
+    font-size: 0.95vw;
+    color: var(--ink);
+    font-weight: 700;
+    margin-top: 0.2em;
+}
+
+.note .pat {
+    font-size: 0.75vw;
+    color: var(--w1);
+    font-weight: 600;
+    margin-top: 0.35em;
+}
+
+.note .def {
+    font-size: 0.75vw;
+    color: var(--ink2);
+    line-height: 1.5;
+    margin-top: 0.35em;
+}
+
+.note .defko {
+    font-size: 0.75vw;
+    color: var(--ink3);
+    line-height: 1.5;
+    margin-top: 0.1em;
+}
+
+/* Oxford / Speaking Dialogue Section inside card */
+.note .conv {
+    margin-top: 0.7vw;
+    padding-top: 0.6vw;
+    border-top: 1px dashed var(--line);
+}
+
+.note .convhead {
+    font-size: 0.7vw;
+    color: var(--w1);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.note .dplay {
+    cursor: pointer;
+    border: 1px solid var(--w1);
+    border-radius: 999px;
+    font-size: 0.62vw;
+    padding: 0.15em 0.7em;
+    background: transparent;
+    color: var(--w1);
+    font-weight: 700;
+    transition: var(--transition-smooth);
+}
+
+.note .dplay:hover {
+    background: var(--w1);
+    color: #ffffff;
+}
+
+.note .turn {
+    font-size: 0.76vw;
+    line-height: 1.45;
+    margin-top: 0.4vw;
+}
+
+.note .turn .sp {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.note .turn .en b {
+    color: var(--w1);
+    font-weight: 700;
+}
+
+.note .turn .ko {
+    color: var(--ink3);
+}
+
+/* ==========================================================================
+   Bottom Control Bar
+   ========================================================================== */
+.shadowbar {
+    position: absolute;
+    left: 5.5%;
+    bottom: 2.5%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 30;
+}
+
+.sbtn {
+    border: 1px solid var(--line);
+    background: #ffffff;
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: var(--transition-smooth);
+}
+
+.sbtn:hover {
+    border-color: var(--w1);
+    background: #fbf9f5;
+}
+
+.sbtn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Listening & Speaking Highlight Buttons */
+.sbtn#listen {
+    color: #1f5fa5;
+    border-color: #bcd2ea;
+}
+
+.sbtn#listen:hover {
+    border-color: #1f5fa5;
+    background: #f2f7fc;
+}
+
+.sbtn.mic {
+    background: var(--w1);
+    color: #ffffff;
+    border-color: var(--w1);
+}
+
+.sbtn.mic:hover {
+    background: color-mix(in srgb, var(--w1) 85%, #000);
+}
+
+.sbtn.mic.rec {
+    background: var(--red);
+    border-color: var(--red);
+    animation: micPulse 1.2s infinite;
+}
+
+@keyframes micPulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+.sresult {
+    font-size: 13px;
+    color: var(--ink2);
+    font-weight: 500;
+}
+
+.sresult .sc {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.sresult .sc.y {
+    color: var(--green);
+}
+
+.sresult .sc.n {
+    color: var(--red);
+}
+
+/* Display rules for different steps */
+.stage[data-step="1"] .left {
+    display: none;
+}
+
+.stage[data-step="1"] .s-ko {
+    display: none;
+}
+
+.stage[data-step="1"] .rule, .stage[data-step="2"] .rule, .stage[data-step="3"] .rule,
+.stage[data-step="1"] .chunk, .stage[data-step="2"] .chunk, .stage[data-step="3"] .chunk {
+    display: none !important;
+}
+
+/* Hide shadowing buttons based on steps */
+.shadowbar .mic {
+    display: none;
+}
+
+.stage[data-step="4"] .shadowbar .mic {
+    display: inline-flex;
+}
+
+.stage[data-step="1"] .shadowbar #listen {
+    display: none;
+}
+
+/* ==========================================================================
+   Dictation Blank Input Styles
+   ========================================================================== */
+.blank {
+    font-family: "Limelight", Georgia, serif;
+    font-size: 1.95vw;
+    border: none;
+    border-bottom: 2px solid var(--w1);
+    background: rgba(217, 154, 43, 0.13);
+    color: var(--ink);
+    padding: 0;
+    outline: none;
+    border-radius: 4px 4px 0 0;
+    vertical-align: baseline;
+    box-sizing: content-box;
+    text-align: center;
+    transition: var(--transition-smooth);
+}
+
+.blank.done {
+    border-bottom-color: var(--green);
+    background: rgba(47, 158, 87, 0.15);
+    color: var(--green);
+}
+
+.blank.wrong {
+    border-bottom-color: var(--red);
+    background: rgba(207, 90, 90, 0.13);
+    color: var(--red);
+}
+
+/* ==========================================================================
+   Episode Slide Overlay (Dynamic Slide)
+   ========================================================================== */
+#slide {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    background: #f7f2ea;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8%;
+    overflow: hidden;
+    transition: opacity 0.3s ease;
+}
+
+#slide.on {
+    display: flex;
+}
+
+#slide .wm {
+    position: absolute;
+    top: -7%;
+    right: 2%;
+    font-family: "Limelight", Georgia, serif;
+    font-size: 38vw;
+    color: rgba(31, 95, 165, 0.08);
+    line-height: 0.8;
+    pointer-events: none;
+}
+
+#slide .eyebrow {
+    font-size: 0.95vw;
+    letter-spacing: 0.34em;
+    color: #1f5fa5;
+    font-weight: 700;
+    margin-bottom: 1em;
+    text-transform: uppercase;
+}
+
+#slide h1 {
+    font-family: "Limelight", Georgia, serif;
+    font-size: 4.8vw;
+    line-height: 1.13;
+    color: #1d1a17;
+    max-width: 82%;
+    margin: 0;
+}
+
+#slide .sko {
+    font-size: 1.5vw;
+    color: #56504a;
+    margin-top: 0.4em;
+    font-weight: 500;
+}
+
+#slide .srule {
+    width: 88px;
+    height: 3px;
+    background: #1f5fa5;
+    margin: 1.25em 0 1.1em;
+}
+
+#slide .startwrap {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    margin-top: 1.7em;
+}
+
+#slide .startbtn {
+    font-family: inherit;
+    font-size: 1.15vw;
+    font-weight: 700;
+    color: #1f5fa5;
+    background: #ffffff;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.72em 2.2em;
+    cursor: pointer;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.15);
+    transition: var(--transition-smooth);
+}
+
+#slide .startbtn:hover {
+    background: #eaf2fb;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(31, 95, 165, 0.25);
+}

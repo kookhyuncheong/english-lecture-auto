@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI 영어 강의 튜터</title>
+    <!-- 구글 웹폰트 적용 (영어 표제어용 Limelight) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet">
+    <!-- 아이콘을 위한 FontAwesome 로드 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- 16:9 극장식 학습 스테이지 -->
+    <div class="stage" id="stage" data-step="2">
+        <!-- 비디오 플레이어 (01강 비디오가 기본 소스로 로드됩니다) -->
+        <video id="vid" playsinline preload="metadata">
+            <source src="/video" type="video/mp4">
+        </video>
+        <div class="scrim"></div>
+
+        <!-- 우측 상단 플로팅 단계조절 알약 (FAB) -->
+        <div class="pfab" id="pfab">
+            <button class="pfab-btn" id="pfabBtn" aria-label="학습 단계">
+                <span class="pfab-cur" id="pfabCur">강의듣기</span>
+                <i class="fa-solid fa-chevron-down pfab-ic"></i>
+            </button>
+            <div class="pmenu" id="pmenu">
+                <button class="pstep" data-step="1">
+                    <span class="pdot"></span>
+                    <span class="plabel">영상보기</span>
+                </button>
+                <button class="pstep" data-step="2">
+                    <span class="pdot"></span>
+                    <span class="plabel">강의듣기</span>
+                </button>
+                <button class="pstep" data-step="3">
+                    <span class="pdot"></span>
+                    <span class="plabel">받아쓰기</span>
+                </button>
+                <button class="pstep" data-step="4">
+                    <span class="pdot"></span>
+                    <span class="plabel">따라말하기</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 좌하단: 반투명 글래스모피즘 자막/문형 분석 카드 -->
+        <div class="left" id="sub-card">
+            <div class="num" id="num">01</div>
+            <div class="s-en" id="sen"></div>
+            <div class="s-ko" id="sko"></div>
+            <div class="rule" id="rule" style="display:none"></div>
+            <div class="chunk" id="chunk"></div>
+        </div>
+
+        <!-- 우하단: 반투명 글래스모피즘 단어 메모지 노출 노트 -->
+        <div class="note" id="note">
+            <!-- 자바스크립트로 동적 wnote 메모 카드들이 렌더링됩니다 -->
+        </div>
+
+        <!-- 하단 학습 컨트롤바 -->
+        <div class="shadowbar">
+            <button class="sbtn" id="listen">
+                <i class="fa-solid fa-play"></i> 원음 듣기
+            </button>
+            <button class="sbtn mic" id="mic">
+                <i class="fa-solid fa-microphone"></i> 따라 말하기
+            </button>
+            <span class="sresult" id="sresult"></span>
+        </div>
+    </div>
+
+    <!-- 스크립트 파일 로드 -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
