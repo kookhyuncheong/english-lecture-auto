@@ -538,8 +538,11 @@ html, body {
 }
 
 /* Display rules for different steps */
-.stage[data-step="1"] .left {
-    display: none;
+.stage[data-step="1"] .left,
+.stage[data-step="1"] .note,
+.stage[data-step="3"] .note,
+.stage[data-step="4"] .note {
+    display: none !important;
 }
 
 .stage[data-step="1"] .s-ko {
@@ -683,4 +686,212 @@ html, body {
     background: #eaf2fb;
     transform: translateY(-2px);
     box-shadow: 0 12px 32px rgba(31, 95, 165, 0.25);
+}
+
+/* ==========================================================================
+   Responsive Mobile Layout (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    html, body {
+        overflow-y: auto !important; /* Allow scroll in mobile portrait */
+        overflow-x: hidden !important;
+        height: auto;
+    }
+    
+    .stage {
+        width: 100vw;
+        height: auto;
+        max-height: none;
+        max-width: none;
+        top: 0;
+        transform: none;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        background: var(--cream);
+        box-shadow: none;
+    }
+    
+    .stage video {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 56.25vw; /* keeps 16:9 ratio for video at top */
+        object-fit: cover;
+        z-index: 30;
+        background: #000;
+    }
+
+    .scrim {
+        display: none;
+    }
+
+    /* Floating Step pill (FAB) on top of the sticky video */
+    .pfab {
+        position: fixed;
+        right: 12px;
+        top: 12px;
+        z-index: 100;
+    }
+
+    /* Subtitle Card stacked below video */
+    .left {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        width: 92%;
+        margin: 20px auto 10px;
+        padding: 16px 20px 20px;
+        border-radius: 12px;
+        background: rgba(252, 248, 240, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 4px 20px rgba(40, 30, 10, 0.08);
+        z-index: 5;
+    }
+
+    .num {
+        font-size: 13px;
+        margin-bottom: 2px;
+    }
+
+    .s-en {
+        font-size: 20px;
+    }
+
+    .s-ko {
+        font-size: 15px;
+        margin-top: 8px;
+    }
+    
+    .blank {
+        font-size: 20px;
+        border-bottom-width: 2px;
+    }
+
+    /* Note Section stacked below subtitle card */
+    .note {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: 92%;
+        margin: 10px auto 100px; /* space for the fixed bottom bar */
+        max-width: none;
+        z-index: 5;
+        gap: 15px;
+    }
+
+    .wnote {
+        padding: 20px;
+        border-radius: 12px;
+        background: rgba(252, 248, 240, 0.95);
+        box-shadow: 0 4px 20px rgba(40, 30, 10, 0.08);
+    }
+    
+    .note .tag {
+        font-size: 10px;
+    }
+    
+    .note .hw {
+        font-size: 19px;
+    }
+    
+    .note .meta {
+        font-size: 11px;
+    }
+    
+    .note .pat-hw {
+        font-size: 15px;
+    }
+    
+    .note .gloss {
+        font-size: 14px;
+    }
+    
+    .note .pat {
+        font-size: 12px;
+    }
+    
+    .note .def {
+        font-size: 13px;
+    }
+    
+    .note .defko {
+        font-size: 12px;
+    }
+
+    .note .conv {
+        margin-top: 12px;
+        padding-top: 10px;
+    }
+
+    .note .convhead {
+        font-size: 11px;
+    }
+
+    .note .dplay {
+        font-size: 10px;
+    }
+
+    .note .turn {
+        font-size: 12.5px;
+        margin-top: 6px;
+    }
+
+    /* Fixed bottom control bar */
+    .shadowbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 68px;
+        background: #fdfaf5;
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -4px 20px rgba(40, 30, 10, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 90;
+        padding: 0 16px;
+    }
+    
+    .sbtn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+    
+    .sresult {
+        font-size: 12px;
+    }
+
+    /* Intro Slide layout for mobile */
+    #slide {
+        position: fixed;
+        z-index: 200;
+        padding: 0 8%;
+    }
+
+    #slide .wm {
+        font-size: 40vw;
+        top: -3%;
+    }
+
+    #slide .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.25em;
+    }
+
+    #slide h1 {
+        font-size: 34px;
+        max-width: 100%;
+    }
+
+    #slide .sko {
+        font-size: 16px;
+        margin-top: 8px;
+    }
+
+    #slide .startbtn {
+        font-size: 15px;
+        padding: 12px 36px;
+    }
 }
