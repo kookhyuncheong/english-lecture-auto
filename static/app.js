@@ -853,6 +853,41 @@ document.addEventListener('DOMContentLoaded', () => {
         sresult.innerHTML = html;
     }
 
+    // ==========================================================================
+    // 10. 모바일 터치 스와이프 제스처 (왼쪽/오른쪽 쓸어넘기기로 문장 이동)
+    // ==========================================================================
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    stage.addEventListener('touchstart', (e) => {
+        if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    stage.addEventListener('touchend', (e) => {
+        if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipeGesture();
+    }, { passive: true });
+
+    function handleSwipeGesture() {
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        
+        // 가로 스와이프가 세로 스크롤보다 크고, 최소 50px 이상 쓸어넘겼을 때 작동
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                go(-1); // 오른쪽으로 쓸어넘김 -> 이전 문장
+            } else {
+                go(1);  // 왼쪽으로 쓸어넘김 -> 다음 문장
+            }
+        }
+    }
+
     // 시작!
     init();
 });
