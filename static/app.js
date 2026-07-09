@@ -476,9 +476,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let defHtml = '';
             if (v.english_definition) {
                 defHtml = `
-                    <div style="font-size: 0.8vw; color: var(--ink); margin-top: 0.6vw; line-height: 1.4;">
+                    <div class="def">
                         ${esc(v.english_definition)}
-                        ${v.english_definition_translation ? `<div style="font-size: 0.75vw; color: var(--ink2); margin-top: 2px;">${esc(v.english_definition_translation)}</div>` : ''}
+                        ${v.english_definition_translation ? `<div class="defko">${esc(v.english_definition_translation)}</div>` : ''}
                     </div>
                 `;
             }
@@ -514,18 +514,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px;">
                         ${v.patterns.map(pat => {
                             const patText = esc(pat.pattern);
-                            const patTrans = pat.pattern_translation ? ` : <span style="font-weight:500; color:var(--ink2); font-size: 0.78vw;">${esc(pat.pattern_translation)}</span>` : '';
+                            const patTrans = pat.pattern_translation ? ` : <span class="pat-trans">${esc(pat.pattern_translation)}</span>` : '';
                             
                             const examplesList = pat.examples ? pat.examples.map(ex => `
                                 <div class="turn" style="margin-top: 5px; padding-left: 10px; border-left: 2px solid ${accent};">
-                                    <span class="en" style="font-weight:600; color:var(--ink);">${esc(ex.eng)}</span><br>
-                                    <span class="ko" style="font-size:0.72vw; color:var(--ink3);">${esc(ex.kor)}</span>
+                                    <span class="ex-en">${esc(ex.eng)}</span><br>
+                                    <span class="ex-ko">${esc(ex.kor)}</span>
                                 </div>
                             `).join('') : '';
 
                             return `
                                 <div style="margin-top: 8px;">
-                                    <div style="font-size: 0.8vw; font-weight: 700; color: ${accent};">
+                                    <div class="pat-label" style="color: ${accent};">
                                         ▶ ${patText}${patTrans}
                                     </div>
                                     ${examplesList}
@@ -543,8 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         ${v.oald_examples.map(ex => `
                             <div class="turn" style="margin-top: 6px;">
-                                <span class="en" style="font-weight:600; color:var(--ink);">${esc(ex.eng)}</span><br>
-                                <span class="ko" style="font-size:0.7vw; color:var(--ink3);">${esc(ex.kor)}</span>
+                                <span class="ex-en">${esc(ex.eng)}</span><br>
+                                <span class="ex-ko">${esc(ex.kor)}</span>
                             </div>
                         `).join('')}
                     </div>
