@@ -35,9 +35,24 @@ analysis_path = os.path.join("processed", "01_motivation", "analysis.json")
 with open(analysis_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
-# 3. Format sentences
+# 3. Create a lookup for global vocab IDs
+vocab_lookup = {}
+for gv in data.get("global_vocab_list", []):
+    vocab_lookup[gv.get("base_word", gv["word"]).lower()] = gv["id"]
+    vocab_lookup[gv["word"].lower()] = gv["id"]
+
+# 4. Format sentences
 sentences_to_upload = []
 for s in data["sentences"]:
+    # Extract matching global vocab IDs
+    vocab_ids = []
+    for v in s.get("vocab_list", []):
+        vw = v["word"].lower()
+        if vw in vocab_lookup:
+            vid = vocab_lookup[vw]
+            if vid not in vocab_ids:
+                vocab_ids.append(vid)
+
     sentences_to_upload.append({
         "index": s["index"],
         "start_time": s["start_time"],
@@ -45,24 +60,35 @@ for s in data["sentences"]:
         "english_text": s["english_text"],
         "korean_text": s["korean_text"],
         "visual_description": s.get("visual_description", ""),
-        "lecture_script": s.get("lecture_script", "")
+        "lecture_script": s.get("lecture_script", ""),
+        "vocab_ids": vocab_ids
     })
 
-# 4. Format vocab
+# 5. Format vocab (stripped down)
 vocabs_to_upload = []
 for v in data.get("global_vocab_list", []):
-    vocabs_to_upload.append({
+    eg = v.get("example_groups", [])
+    
+    if "patterns" in v:
+        for p in v["patterns"]:
+            eg.append({
+                "grammar_hint": p.get("pattern", ""),
+                "examples": p.get("examples", [])
+            })
+            
+    payload = {
         "id": v["id"],
-        "sentence_index": v["sentence_index"],
         "word": v["word"],
         "meaning": v["meaning"],
         "level": v.get("level", ""),
         "english_definition": v.get("english_definition", ""),
         "english_definition_translation": v.get("english_definition_translation", ""),
-        "explanation": v.get("explanation", ""),
-        "patterns": v.get("patterns", []),
+        "example_groups": eg,
         "ab_dialogue": v.get("ab_dialogue", {})
-    })
+    }
+    if "base_word" in v:
+        payload["base_word"] = v["base_word"]
+    vocabs_to_upload.append(payload)
 
 def upload_to_supabase(table_name, payload):
     url = f"{supabase_url}/rest/v1/{table_name}"
@@ -92,7 +118,7 @@ def upload_to_supabase(table_name, payload):
 # Run
 print("Starting migration...")
 s_success = upload_to_supabase("sentence", sentences_to_upload)
-v_success = upload_to_supabase("vocab", vocabs_to_upload)
+v_success = upload_to_supabase("vocabularies", vocabs_to_upload)
 
 if s_success and v_success:
     print("Migration completed successfully!")

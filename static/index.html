@@ -56,9 +56,17 @@
             <div class="chunk" id="chunk"></div>
         </div>
 
-        <!-- 우하단: 반투명 글래스모피즘 단어 메모지 노출 노트 -->
+        <!-- 우측 단어장 팝업 탭 (스티커) -->
+        <div class="vocab-tab hidden" id="vocabTab">
+            <i class="fa-solid fa-book-open"></i> 단어장
+        </div>
+
+        <!-- 우측: 반투명 글래스모피즘 단어 메모지 노출 노트 (서랍형) -->
         <div class="note" id="note">
-            <!-- 자바스크립트로 동적 wnote 메모 카드들이 렌더링됩니다 -->
+            <button class="note-close" id="noteClose"><i class="fa-solid fa-xmark"></i></button>
+            <div class="note-content" id="noteContent">
+                <!-- 자바스크립트로 동적 wnote 메모 카드들이 렌더링됩니다 -->
+            </div>
         </div>
 
         <!-- 하단 학습 컨트롤바 -->

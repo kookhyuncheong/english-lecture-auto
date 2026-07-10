@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const rule = document.getElementById('rule');
     const chunk = document.getElementById('chunk');
     const note = document.getElementById('note');
+    const noteContent = document.getElementById('noteContent');
+    const vocabTab = document.getElementById('vocabTab');
+    const noteClose = document.getElementById('noteClose');
     const listenBtn = document.getElementById('listen');
     const micBtn = document.getElementById('mic');
     const sresult = document.getElementById('sresult');
@@ -66,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 2. Supabase에서 단어 목록 가져오기
             const { data: globalVocabs, error: vError } = await supabaseClient
-                .from('vocab')
+                .from('vocabularies')
                 .select('*');
             
             if (vError) throw vError;
@@ -234,8 +237,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!sentence) return;
 
         // UI 기본 청소
+        const subCard = document.getElementById('sub-card');
+        if (subCard) subCard.style.opacity = '1'; // 자막 카드 보이기
+
         note.classList.remove('on');
-        note.innerHTML = '';
+        if (vocabTab) vocabTab.classList.add('hidden');
+        if (noteContent) noteContent.innerHTML = '';
+        else note.innerHTML = '';
         chunk.innerHTML = '';
         rule.style.display = 'none';
 
@@ -257,7 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 6. 재생 시크 이동
         if (seek) {
-            vid.currentTime = sentence.startSeconds;
+            // 브라우저의 부동소수점 오차(예: 12.6초가 12.5999초로 지정됨)로 인해 
+            // timeupdate 시 이전 자막으로 매칭(무한 초기화)되는 현상을 방지하기 위해 0.05초 추가
+            vid.currentTime = sentence.startSeconds + 0.05;
         }
 
         setSR(STEP === 4 ? '따라 말하면 채점돼요 🎤' : '');
@@ -314,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const en = sentence.english_text;
-        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => v.sentence_index === sentence.index);
+        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => (sentence.vocab_ids || []).includes(v.id));
         
         if (matchedVocabs.length === 0) {
             sen.innerHTML = esc(en);
@@ -349,20 +359,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 클릭 이벤트 등록 -> 자막 클릭 시 해당하는 wnote 카드만 노출
         sen.querySelectorAll('.hl').forEach(hl => {
-            hl.addEventListener('click', () => {
+            hl.addEventListener('click', (e) => {
+                e.stopPropagation(); // 비디오 정지 방지
                 if (STEP !== 2) return;
                 const vocabId = hl.getAttribute('data-vocab-id');
                 const targetCards = document.querySelectorAll('.wnote');
                 const matchedCard = document.getElementById(`wnote-${vocabId}`);
                 
+                // 단어장 열기
+                note.classList.add('on');
+                
                 if (matchedCard) {
-                    const isShown = !matchedCard.classList.contains('hidden');
                     targetCards.forEach(c => c.classList.add('hidden'));
-                    if (!isShown) {
-                        matchedCard.classList.remove('hidden');
-                    }
+                    matchedCard.classList.remove('hidden');
                 }
             });
+        });
+    }
+
+    // 단어장 서랍 토글 이벤트 등록
+    if (vocabTab && noteClose) {
+        vocabTab.addEventListener('click', (e) => {
+            e.stopPropagation();
+            note.classList.add('on');
+            vocabTab.classList.add('hidden');
+        });
+        noteClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            note.classList.remove('on');
+            vocabTab.classList.remove('hidden');
         });
     }
 
@@ -371,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     function renderDictation(sentence) {
         const en = sentence.english_text;
-        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => v.sentence_index === sentence.index);
+        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => (sentence.vocab_ids || []).includes(v.id));
 
         if (matchedVocabs.length === 0) {
             sen.innerHTML = esc(en);
@@ -478,22 +503,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderNotes(sentence) {
         if (STEP !== 2) {
             note.classList.remove('on');
-            note.innerHTML = '';
+            if (vocabTab) vocabTab.classList.add('hidden');
+            if (noteContent) noteContent.innerHTML = '';
+            else note.innerHTML = '';
             return;
         }
 
-        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => v.sentence_index === sentence.index);
+        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => (sentence.vocab_ids || []).includes(v.id));
         if (matchedVocabs.length === 0) {
             note.classList.remove('on');
-            note.innerHTML = '';
+            if (vocabTab) vocabTab.classList.add('hidden');
+            if (noteContent) noteContent.innerHTML = '';
+            else note.innerHTML = '';
             return;
         }
+
+        // 매칭된 단어가 있으면 스티커 표시
+        if (vocabTab) vocabTab.classList.remove('hidden');
 
         let html = [];
         matchedVocabs.forEach((v, idx) => {
             const accent = getAccentColor(idx);
             
-            // OALD 영영정의 박스 (단백하고 심플한 디자인)
+            // OALD 영영정의 박스
             let defHtml = '';
             if (v.english_definition) {
                 defHtml = `
@@ -503,71 +535,68 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             }
+            
+            // 영상 원문 매칭 문장 (왼쪽 자막 카드와 중복되므로 제거)
+            let sentenceHtml = '';
 
-            // A/B 대화 예시 (Dialogue Practice - 추후 배치를 위해 화면 노출 보류)
-            let convHtml = '';
-            /*
-            if (v.ab_dialogue && v.ab_dialogue.dialogue_a) {
-                const d = v.ab_dialogue;
-                convHtml = `
-                    <div class="conv" style="margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px;">
-                        <div class="convhead" style="color: ${accent}">
-                            <span>💬 Dialogue Practice</span>
-                            ${d.audio_path ? `<button class="dplay" data-audio="${esc(d.audio_path)}" style="border-color: ${accent}; color: ${accent};">▶ 듣기</button>` : ''}
-                        </div>
-                        <div class="turn">
-                            <span class="sp">A.</span> <span class="en">${esc(d.dialogue_a)}</span><br>
-                            <span class="ko">${esc(d.translation_a)}</span>
-                        </div>
-                        <div class="turn">
-                            <span class="sp">B.</span> <span class="en">${esc(d.dialogue_b)}</span><br>
-                            <span class="ko">${esc(d.translation_b)}</span>
-                        </div>
-                    </div>
-                `;
-            }
-            */
+            // 마크다운 형태의 이탤릭체(*text*)를 HTML <i> 태그로 변환하는 유틸리티
+            const parseItalic = (text) => {
+                if (!text) return '';
+                return text.replace(/\*(.*?)\*/g, '<i style="color:var(--w1); font-weight:600;">$1</i>');
+            };
 
-            // OALD 패턴 및 예문 리스트 (헤더 없이 단백하게 분리)
-            let patternsHtml = '';
-            if (v.patterns && v.patterns.length > 0) {
-                patternsHtml = `
+            // 브리태니커 스타일 예문 그룹 (grammar_hint 지원)
+            let examplesHtml = '';
+            if (v.example_groups && v.example_groups.length > 0) {
+                examplesHtml = `
                     <div style="margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px;">
-                        ${v.patterns.map(pat => {
-                            const patText = esc(pat.pattern);
-                            const patTrans = pat.pattern_translation ? ` : <span class="pat-trans">${esc(pat.pattern_translation)}</span>` : '';
+                        ${v.example_groups.map(group => {
+                            const grammarHint = group.grammar_hint ? `
+                                <div class="grammar-hint" style="color: ${accent}; font-style: italic; font-weight: 700; margin-bottom: 6px; font-size: 0.95em;">
+                                    ${parseItalic(esc(group.grammar_hint))}
+                                </div>
+                            ` : '';
                             
-                            const examplesList = pat.examples ? pat.examples.map(ex => `
+                            const exList = group.examples ? group.examples.map(ex => `
                                 <div class="turn" style="margin-top: 5px; padding-left: 10px; border-left: 2px solid ${accent};">
-                                    <span class="ex-en">${esc(ex.eng)}</span><br>
+                                    <span class="ex-en">${parseItalic(esc(ex.eng))}</span><br>
                                     <span class="ex-ko">${esc(ex.kor)}</span>
                                 </div>
                             `).join('') : '';
 
                             return `
-                                <div style="margin-top: 8px;">
-                                    <div class="pat-label" style="color: ${accent};">
-                                        ▶ ${patText}${patTrans}
-                                    </div>
-                                    ${examplesList}
+                                <div class="example-group" style="margin-top: 12px;">
+                                    ${grammarHint}
+                                    ${exList}
                                 </div>
                             `;
                         }).join('')}
                     </div>
                 `;
-            } else if (v.oald_examples && v.oald_examples.length > 0) {
-                // 이전 레거시 평탄화 포맷용 예외 처리
-                patternsHtml = `
-                    <div class="conv" style="margin-top: 8px; border-top: 1px dashed #e2d7c4; padding-top: 8px;">
-                        <div class="convhead" style="color: ${accent}">
-                            <span>📚 Oxford Examples</span>
+            }
+
+            // 카카오톡/iMessage 말풍선 스타일 A/B 대화문
+            let convHtml = '';
+            if (v.ab_dialogue && v.ab_dialogue.dialogue_a) {
+                const d = v.ab_dialogue;
+                convHtml = `
+                    <div class="conv" style="margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 12px;">
+                        <div class="convhead" style="color: ${accent}; font-weight: 600; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>💬 Dialogue Practice</span>
+                            ${(d.audio_path_a && d.audio_path_b) ? `<button class="dplay" data-audio-a="${esc(d.audio_path_a)}" data-audio-b="${esc(d.audio_path_b)}" style="background: ${accent}; color: white; border:none; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; cursor:pointer; font-weight:600;">▶ 듣기</button>` : ''}
                         </div>
-                        ${v.oald_examples.map(ex => `
-                            <div class="turn" style="margin-top: 6px;">
-                                <span class="ex-en">${esc(ex.eng)}</span><br>
-                                <span class="ex-ko">${esc(ex.kor)}</span>
+                        <div class="dialogue-container" style="display:flex; flex-direction:column; gap:10px;">
+                            <div class="dialogue-bubble bubble-a" style="align-self: flex-start; background: #ffffff; border: 1px solid var(--line); padding: 10px 14px; border-radius: 18px; border-bottom-left-radius: 4px; max-width: 90%; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                                <div style="font-size:0.75em; color:var(--ink3); margin-bottom:4px; font-weight:600;">A</div>
+                                <div class="en" style="color:var(--ink);">${esc(d.dialogue_a)}</div>
+                                <div class="ko" style="font-size:0.85em; color:var(--ink2); margin-top:4px;">${esc(d.translation_a)}</div>
                             </div>
-                        `).join('')}
+                            <div class="dialogue-bubble bubble-b" style="align-self: flex-end; background: ${accent}; color: white; padding: 10px 14px; border-radius: 18px; border-bottom-right-radius: 4px; max-width: 90%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                <div style="font-size:0.75em; opacity: 0.8; margin-bottom:4px; font-weight:600;">B</div>
+                                <div class="en" style="color:white;">${esc(d.dialogue_b)}</div>
+                                <div class="ko" style="font-size:0.85em; opacity:0.9; margin-top:4px;">${esc(d.translation_b)}</div>
+                            </div>
+                        </div>
                     </div>
                 `;
             }
@@ -575,42 +604,60 @@ document.addEventListener('DOMContentLoaded', () => {
             html.push(`
                 <div class="wnote hidden" id="wnote-${v.id}" data-ci="${idx}" style="border-top-color: ${accent}; --sticker: ${accent};">
                     <div class="hwline">
-                        <div class="hw">${esc(v.word)}</div>
+                        <div class="hw">${esc(v.base_word || v.word)}</div>
                     </div>
                     <div class="gloss">${esc(v.meaning)}</div>
                     ${defHtml}
-                    ${patternsHtml}
+                    ${examplesHtml}
                     ${convHtml}
                 </div>
             `);
         });
 
-        note.innerHTML = html.join('');
-        note.classList.add('on');
+        if (noteContent) {
+            noteContent.innerHTML = html.join('');
+        } else {
+            note.innerHTML = html.join('');
+        }
+        
+        // 자동으로 열리지 않고, 스크린샷과 시연을 위해 탭만 활성화되도록 변경
+        // note.classList.add('on');
 
-        // 첫 번째 카드는 기본으로 노출
-        const firstCard = note.querySelector('.wnote');
+        // 첫 번째 카드는 기본으로 노출되도록 숨김 해제
+        const targetContainer = noteContent || note;
+        const firstCard = targetContainer.querySelector('.wnote');
         if (firstCard) {
             firstCard.classList.remove('hidden');
         }
 
         // 회화 듣기 오디오 바인딩
-        note.querySelectorAll('.dplay').forEach(btn => {
+        targetContainer.querySelectorAll('.dplay').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const audioPath = btn.getAttribute('data-audio');
-                if (audioPath) {
+                const pathA = btn.getAttribute('data-audio-a');
+                const pathB = btn.getAttribute('data-audio-b');
+                if (pathA && pathB) {
                     try {
                         vid.pause(); // 비디오 정지
-                        const audio = new Audio(audioPath);
-                        audio.play()
+                        const audioA = new Audio(pathA);
+                        const audioB = new Audio(pathB);
+                        
+                        audioA.play()
                             .then(() => {
-                                setSR('🔊 대화 예문 재생 중...');
+                                setSR('🔊 대화 재생 중 (A)...');
                             })
                             .catch(err => {
-                                console.error("오디오 재생 실패: ", err);
+                                console.error("오디오 A 재생 실패: ", err);
                             });
-                        audio.addEventListener('ended', () => {
+                            
+                        audioA.addEventListener('ended', () => {
+                            setSR('🔊 대화 재생 중 (B)...');
+                            setTimeout(() => {
+                                audioB.play().catch(err => console.error("오디오 B 재생 실패: ", err));
+                            }, 300); // 0.3초 여유
+                        });
+                        
+                        audioB.addEventListener('ended', () => {
                             setSR('대화 재생 완료');
                             vid.play().catch(() => {});
                         });
@@ -712,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 비디오 실시간 시간 추적
     if (vid) {
         vid.addEventListener('timeupdate', () => {
-            if (STEP === 1 || STEP === 3 || !ALLSENTS.length) return;
+            if (STEP === 3 || !ALLSENTS.length) return;
             
             const t = vid.currentTime;
             let matchedIdx = -1;
@@ -723,8 +770,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (matchedIdx >= 0 && matchedIdx !== currentIndex) {
-                loadSentence(matchedIdx, false); // 시크(seek)는 건너뛰고 자막과 카드만 교체
+            const subCard = document.getElementById('sub-card');
+            if (matchedIdx >= 0) {
+                if (subCard) subCard.style.opacity = '1';
+                if (matchedIdx !== currentIndex) {
+                    loadSentence(matchedIdx, false); // 시크(seek)는 건너뛰고 자막과 카드만 교체
+                }
+            } else {
+                // 대사가 없는 빈 구간이면 이전 자막이 계속 떠있지 않도록 투명 처리
+                if (subCard) subCard.style.opacity = '0';
             }
         });
     }

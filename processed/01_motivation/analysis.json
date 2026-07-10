@@ -11,10 +11,7 @@
         {
           "word": "aspire",
           "level": "C1",
-          "meaning": "열망하다, 바라다",
-          "explanation": "어떤 것을 강하게 원하고 그것을 달성하기 위해 노력하는 것을 의미합니다. 여기서는 '전문 예술가가 되기를 열망했다'는 뜻으로 쓰였죠.",
-          "pattern": "aspire to be/do something",
-          "pattern_meaning": "⋯이 되기를[⋯을 하기를] 열망하다, 간절히 원하다"
+          "meaning": "열망하다, 바라다"
         }
       ],
       "visual_description": "하얀 배경에 손이 붓을 들고 나타나고, 붓 끝에서 반짝이는 빛이 납니다.",
@@ -36,7 +33,21 @@
       "end_time": "00:00:26,500",
       "english_text": "But as the application deadline looms, you suddenly find yourself unmotivated and avoiding the canvas altogether.",
       "korean_text": "하지만 지원 마감일이 코앞으로 다가오자, 갑자기 의욕이 뚝 떨어져서 캔버스를 아예 멀리하게 되죠.",
-      "vocab_list": [],
+      "vocab_list": [
+        {
+          "word": "looms",
+          "level": "C1",
+          "meaning": "다가오다, 임박하다"
+        },
+        {
+          "word": "loom",
+          "level": "C1",
+          "equivalent_term": "다가오다, 임박하다",
+          "meaning": "다가오다, 임박하다",
+          "pattern": "loom (large/closer)",
+          "pattern_meaning": "(거대하게/점점 더) 다가오다"
+        }
+      ],
       "visual_description": "붓을 타고 날아가던 사람이 점점 속도가 줄어들고, 붓이 아래로 떨어집니다. 이어서 모래시계 안에 사람이 앉아 있는 모습이 보입니다.",
       "lecture_script": ""
     },
@@ -404,45 +415,101 @@
   "global_vocab_list": [
     {
       "id": "vocab_1",
-      "word": "aspire",
+      "word": "aspired",
       "target_phrase": "aspired to be",
       "base_word": "aspire",
       "level": "C1",
-      "meaning": "열망하다",
-      "english_definition": "to have a strong desire to achieve or to become something",
-      "english_definition_translation": "무언가를 성취하거나 무언가가 되고자 하는 강한 열망을 가지다",
-      "patterns": [
+      "meaning": "열망하다, 간절히 바라다",
+      "english_definition": "to want to have or achieve something (such as a particular career or level of success)",
+      "english_definition_translation": "무언가를 성취하거나 무언가가 되고자 강하게 원하다 (특히 특정 직업이나 성공의 수준)",
+      "sentence_index": 1,
+      "sentence_text": "You've always aspired to be a professional artist.",
+      "ab_dialogue": {
+        "situation": "동료와 커리어 목표에 대해 이야기할 때",
+        "dialogue_a": "I've always aspired to a leadership position in this company.",
+        "dialogue_b": "That's great! You definitely have the skills for it.",
+        "translation_a": "나는 항상 이 회사에서 리더십 있는 자리에 오르기를 열망해왔어.",
+        "translation_b": "멋지다! 넌 확실히 그럴 만한 능력이 있어.",
+        "audio_path_a": "processed/01_motivation\\audio/vocab_1_dialogue_a.wav",
+        "audio_path_b": "processed/01_motivation\\audio/vocab_1_dialogue_b.wav"
+      },
+      "example_groups": [
         {
-          "pattern": "aspire (to something)",
-          "pattern_translation": "~을 열망하다",
+          "grammar_hint": "often + *to*",
           "examples": [
             {
-              "eng": "She aspired to a scientific career.",
-              "kor": "그녀는 과학자로서의 커리어를 간절히 바랐다."
+              "eng": "Both young men *aspire to* careers in medicine.",
+              "kor": "두 청년 모두 의학 분야의 커리어를 열망한다."
+            },
+            {
+              "eng": "She *aspires to* a more active role in her government.",
+              "kor": "그녀는 정부에서 더 적극적인 역할을 맡기를 간절히 바란다."
+            },
+            {
+              "eng": "people who *aspire to* home ownership",
+              "kor": "내 집 마련을 열망하는 사람들"
             }
           ]
         },
         {
-          "pattern": "aspire to be/do something",
-          "pattern_translation": "~이 되기를/하기를 열망하다",
+          "grammar_hint": "often followed by *to* + verb",
           "examples": [
             {
-              "eng": "He aspired to be their next leader.",
-              "kor": "그는 그들의 차기 리더가 되기를 열망했다."
+              "eng": "He says he never *aspired to become* famous.",
+              "kor": "그는 한 번도 유명해지기를 바란 적이 없다고 말한다."
+            },
+            {
+              "eng": "little girls who *aspire to play* professional basketball",
+              "kor": "프로 농구 선수가 되기를 꿈꾸는 어린 소녀들"
             }
           ]
         }
       ],
-      "sentence_index": 1,
-      "sentence_text": "You've always aspired to be a professional artist.",
-      "explanation": "이 문장에서는 'aspire to be' 패턴이 쓰여 전문 예술가가 되고자 했던 주인공의 간절한 바람을 나타냅니다. 단순히 원하다(want)보다 훨씬 강하고 지향적인 느낌을 주는 고급 어휘입니다.",
+      "sentence_contextual_translation": "항상 전문 화가가 되기를 꿈꿔왔죠."
+    },
+    {
+      "id": "vocab_2",
+      "word": "loom",
+      "target_phrase": "deadline looms",
+      "base_word": "loom",
+      "level": "C1",
+      "equivalent_term": "다가오다, 임박하다",
+      "meaning": "(불쾌하거나 두려운 일이) 다가오다, 임박하다",
+      "english_definition": "to be close to happening : to be about to happen — used especially of unpleasant or frightening things",
+      "english_definition_translation": "무언가가 일어날 때가 가까워지다, 곧 일어날 것 같다 — 특히 불쾌하거나 두려운 일에 대해 쓰임",
+      "source_video": "01강",
+      "source_sentence_index": 3,
+      "sentence_text": "But as the application deadline looms, you suddenly find yourself unmotivated and avoiding the canvas altogether.",
+      "patterns": [
+        {
+          "examples": [
+            {
+              "eng": "A workers' strike is *looming*.",
+              "kor": "노동자들의 파업이 임박했다."
+            },
+            {
+              "eng": "A battle is *looming* in Congress over the proposed budget cuts.",
+              "kor": "제안된 예산 삭감을 두고 의회에서 충돌이 임박했다."
+            },
+            {
+              "eng": "a *looming* battle/conflict/problem/storm",
+              "kor": "임박한 전투/갈등/문제/폭풍"
+            },
+            {
+              "eng": "The deadline *looms closer* with each passing day.",
+              "kor": "마감일이 하루하루 점점 다가오고 있다."
+            }
+          ]
+        }
+      ],
       "ab_dialogue": {
-        "situation": "친구와의 일상 대화",
-        "dialogue_a": "I've always aspired to be a successful entrepreneur.",
-        "dialogue_b": "That's a great goal! I'm sure you'll achieve it.",
-        "translation_a": "나는 항상 성공적인 기업가가 되기를 열망해왔어.",
-        "translation_b": "정말 멋진 목표다! 분명 이룰 거야.",
-        "audio_path": "/processed/01_motivation/audio/vocab_dialogue_vocab_1.wav"
+        "situation": "회사에서 프로젝트 마감일을 앞두고",
+        "dialogue_a": "The project deadline is looming, and we still have so much to do.",
+        "dialogue_b": "I know, we need to work overtime this weekend.",
+        "translation_a": "프로젝트 마감일이 코앞으로 다가오고 있는데, 우린 아직 할 일이 너무 많아.",
+        "translation_b": "알아, 우리 이번 주말엔 야근해야 할 것 같아.",
+        "audio_path_a": "processed/01_motivation\\audio/vocab_2_dialogue_a.wav",
+        "audio_path_b": "processed/01_motivation\\audio/vocab_2_dialogue_b.wav"
       }
     }
   ]
