@@ -75,9 +75,9 @@ for i, v in enumerate(data.get("global_vocab_list", [])):
     
     # 2. Examples payload
     eg_index = 1
-    if "patterns" in v:
-        for p in v["patterns"]:
-            ghint = p.get("pattern", "")
+    if "example_groups" in v:
+        for p in v["example_groups"]:
+            ghint = p.get("grammar_hint", "")
             for ex in p.get("examples", []):
                 e_id = build_id("E", lemma, pos, sense, str(eg_index))
                 examples_to_upload.append({
