@@ -30,9 +30,16 @@ if not supabase_url or not supabase_service_key:
 print("Supabase config loaded successfully.")
 
 # 2. Load analysis.json
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from schema import AnalysisData
+
 analysis_path = os.path.join("processed", "01_motivation", "analysis.json")
 with open(analysis_path, "r", encoding="utf-8") as f:
-    data = json.load(f)
+    raw_data = json.load(f)
+    
+# 🚀 Pydantic 설계도 통과 (이 과정에서 형태가 다르면 에러 뿜음)
+data = AnalysisData.model_validate(raw_data)
 
 def slugify(text):
     return text.lower().replace(" ", "_").replace("-", "_")
@@ -50,8 +57,8 @@ dialogues_to_upload = []
 vocab_lookup = {} # Maps word/base_word to (lexicon_id, target_phrase)
 
 # Process global_vocab_list
-for i, v in enumerate(data.get("global_vocab_list", [])):
-    lemma = v.get("base_word", v["word"])
+for i, v in enumerate(data.global_vocab_list):
+    lemma = v.base_word if v.base_word else v.word
     pos = "verb"
     sense = i # using index as sense for now
     
@@ -59,73 +66,70 @@ for i, v in enumerate(data.get("global_vocab_list", [])):
     d_id = build_id("D", lemma, pos, sense)
     
     # Lookup map
-    vocab_lookup[lemma.lower()] = (l_id, v.get("target_phrase", v["word"]))
-    vocab_lookup[v["word"].lower()] = (l_id, v.get("target_phrase", v["word"]))
+    vocab_lookup[lemma.lower()] = (l_id, v.target_phrase if v.target_phrase else v.word)
+    vocab_lookup[v.word.lower()] = (l_id, v.target_phrase if v.target_phrase else v.word)
     
     # 1. Lexicon payload
     lexicon_to_upload.append({
         "id": l_id,
         "lemma": lemma,
         "pos": pos,
-        "level": v.get("level", ""),
-        "meaning": v.get("meaning", ""),
-        "english_definition": v.get("english_definition", ""),
-        "english_definition_translation": v.get("english_definition_translation", "")
+        "level": v.level or "",
+        "meaning": v.meaning or "",
+        "english_definition": v.english_definition or "",
+        "english_definition_translation": v.english_definition_translation or ""
     })
     
     # 2. Examples payload
     eg_index = 1
-    if "example_groups" in v:
-        for p in v["example_groups"]:
-            ghint = p.get("grammar_hint", "")
-            for ex in p.get("examples", []):
+    if v.example_groups:
+        for p in v.example_groups:
+            ghint = p.grammar_hint
+            for ex in p.examples:
                 e_id = build_id("E", lemma, pos, sense, str(eg_index))
                 examples_to_upload.append({
                     "id": e_id,
                     "lexicon_id": l_id,
-                    "english_text": ex.get("eng", ""),
-                    "korean_text": ex.get("kor", ""),
+                    "english_text": ex.eng,
+                    "korean_text": ex.kor,
                     "grammar_hint": ghint,
                     "tts_url": None
                 })
                 eg_index += 1
                 
     # 3. Dialogues payload
-    if "ab_dialogue" in v and v["ab_dialogue"]:
-        ab = v["ab_dialogue"]
+    if v.ab_dialogue:
+        ab = v.ab_dialogue
         dialogues_to_upload.append({
             "id": d_id,
             "lexicon_id": l_id,
-            "speaker_a_eng": ab.get("dialogue_a", ""),
-            "speaker_a_kor": ab.get("translation_a", ""),
-            "speaker_b_eng": ab.get("dialogue_b", ""),
-            "speaker_b_kor": ab.get("translation_b", "")
+            "speaker_a_eng": ab.dialogue_a,
+            "speaker_a_kor": ab.translation_a,
+            "speaker_b_eng": ab.dialogue_b,
+            "speaker_b_kor": ab.translation_b
         })
 
 # Process sentences
 sentences_to_upload = []
-for s in data["sentences"]:
+for s in data.sentences:
     lexicon_instances = []
     
-    for v in s.get("vocab_list", []):
-        vw = v["word"].lower()
-        if vw in vocab_lookup:
-            l_id, t_phrase = vocab_lookup[vw]
-            # Avoid duplicates in the same sentence
-            if not any(li["lexicon_id"] == l_id for li in lexicon_instances):
-                lexicon_instances.append({
-                    "lexicon_id": l_id,
-                    "target_phrase": t_phrase
-                })
+    # Process lexicon_instances properly
+    if s.lexicon_instances:
+        for inst in s.lexicon_instances:
+            lexicon_instances.append({
+                "lexicon_id": inst.lexicon_id,
+                "target_phrase": inst.target_phrase
+            })
 
     sentences_to_upload.append({
-        "index": s["index"],
-        "start_time": s["start_time"],
-        "end_time": s["end_time"],
-        "english_text": s["english_text"],
-        "korean_text": s["korean_text"],
-        "visual_description": s.get("visual_description", ""),
-        "lecture_script": s.get("lecture_script", ""),
+        "index": s.index,
+        "start_time": s.start_time,
+        "end_time": s.end_time,
+        "english_text": s.english_text,
+        "korean_text": s.korean_text,
+        "visual_description": s.visual_description,
+        "lecture_script": s.lecture_script,
         "lexicon_instances": lexicon_instances
     })
 
