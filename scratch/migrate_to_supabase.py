@@ -28,30 +28,95 @@ if not supabase_url or not supabase_service_key:
     exit(1)
 
 print("Supabase config loaded successfully.")
-print(f"URL: {supabase_url}")
 
 # 2. Load analysis.json
 analysis_path = os.path.join("processed", "01_motivation", "analysis.json")
 with open(analysis_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
-# 3. Create a lookup for global vocab IDs
-vocab_lookup = {}
-for gv in data.get("global_vocab_list", []):
-    vocab_lookup[gv.get("base_word", gv["word"]).lower()] = gv["id"]
-    vocab_lookup[gv["word"].lower()] = gv["id"]
+def slugify(text):
+    return text.lower().replace(" ", "_").replace("-", "_")
 
-# 4. Format sentences
+def build_id(prefix, lemma, pos="verb", sense=0, extra=""):
+    slug = slugify(lemma)
+    if extra:
+        return f"{prefix}-{slug}-{pos}-{sense}-{extra}"
+    return f"{prefix}-{slug}-{pos}-{sense}"
+
+lexicon_to_upload = []
+examples_to_upload = []
+dialogues_to_upload = []
+
+vocab_lookup = {} # Maps word/base_word to (lexicon_id, target_phrase)
+
+# Process global_vocab_list
+for i, v in enumerate(data.get("global_vocab_list", [])):
+    lemma = v.get("base_word", v["word"])
+    pos = "verb"
+    sense = i # using index as sense for now
+    
+    l_id = build_id("L", lemma, pos, sense)
+    d_id = build_id("D", lemma, pos, sense)
+    
+    # Lookup map
+    vocab_lookup[lemma.lower()] = (l_id, v.get("target_phrase", v["word"]))
+    vocab_lookup[v["word"].lower()] = (l_id, v.get("target_phrase", v["word"]))
+    
+    # 1. Lexicon payload
+    lexicon_to_upload.append({
+        "id": l_id,
+        "lemma": lemma,
+        "pos": pos,
+        "level": v.get("level", ""),
+        "meaning": v.get("meaning", ""),
+        "english_definition": v.get("english_definition", ""),
+        "english_definition_translation": v.get("english_definition_translation", "")
+    })
+    
+    # 2. Examples payload
+    eg_index = 1
+    if "patterns" in v:
+        for p in v["patterns"]:
+            ghint = p.get("pattern", "")
+            for ex in p.get("examples", []):
+                e_id = build_id("E", lemma, pos, sense, str(eg_index))
+                examples_to_upload.append({
+                    "id": e_id,
+                    "lexicon_id": l_id,
+                    "english_text": ex.get("eng", ""),
+                    "korean_text": ex.get("kor", ""),
+                    "grammar_hint": ghint,
+                    "tts_url": None
+                })
+                eg_index += 1
+                
+    # 3. Dialogues payload
+    if "ab_dialogue" in v and v["ab_dialogue"]:
+        ab = v["ab_dialogue"]
+        dialogues_to_upload.append({
+            "id": d_id,
+            "lexicon_id": l_id,
+            "speaker_a_eng": ab.get("dialogue_a", ""),
+            "speaker_a_kor": ab.get("translation_a", ""),
+            "speaker_b_eng": ab.get("dialogue_b", ""),
+            "speaker_b_kor": ab.get("translation_b", "")
+        })
+
+# Process sentences
 sentences_to_upload = []
 for s in data["sentences"]:
-    # Extract matching global vocab IDs
-    vocab_ids = []
+    lexicon_instances = []
+    
     for v in s.get("vocab_list", []):
         vw = v["word"].lower()
         if vw in vocab_lookup:
-            vid = vocab_lookup[vw]
-            if vid not in vocab_ids:
-                vocab_ids.append(vid)
+            l_id, t_phrase = vocab_lookup[vw]
+            # Avoid duplicates in the same sentence
+            if not any(li["lexicon_id"] == l_id for li in lexicon_instances):
+                lexicon_instances.append({
+                    "lexicon_id": l_id,
+                    "target_phrase": t_phrase
+                })
 
     sentences_to_upload.append({
         "index": s["index"],
@@ -61,36 +126,12 @@ for s in data["sentences"]:
         "korean_text": s["korean_text"],
         "visual_description": s.get("visual_description", ""),
         "lecture_script": s.get("lecture_script", ""),
-        "vocab_ids": vocab_ids
+        "lexicon_instances": lexicon_instances
     })
 
-# 5. Format vocab (stripped down)
-vocabs_to_upload = []
-for v in data.get("global_vocab_list", []):
-    eg = v.get("example_groups", [])
-    
-    if "patterns" in v:
-        for p in v["patterns"]:
-            eg.append({
-                "grammar_hint": p.get("pattern", ""),
-                "examples": p.get("examples", [])
-            })
-            
-    payload = {
-        "id": v["id"],
-        "word": v["word"],
-        "meaning": v["meaning"],
-        "level": v.get("level", ""),
-        "english_definition": v.get("english_definition", ""),
-        "english_definition_translation": v.get("english_definition_translation", ""),
-        "example_groups": eg,
-        "ab_dialogue": v.get("ab_dialogue", {})
-    }
-    if "base_word" in v:
-        payload["base_word"] = v["base_word"]
-    vocabs_to_upload.append(payload)
-
 def upload_to_supabase(table_name, payload):
+    if not payload:
+        return True
     url = f"{supabase_url}/rest/v1/{table_name}"
     headers = {
         "apikey": supabase_service_key,
@@ -117,10 +158,12 @@ def upload_to_supabase(table_name, payload):
 
 # Run
 print("Starting migration...")
+l_success = upload_to_supabase("lexicon", lexicon_to_upload)
+e_success = upload_to_supabase("examples", examples_to_upload)
+d_success = upload_to_supabase("dialogues", dialogues_to_upload)
 s_success = upload_to_supabase("sentence", sentences_to_upload)
-v_success = upload_to_supabase("vocabularies", vocabs_to_upload)
 
-if s_success and v_success:
+if all([l_success, e_success, d_success, s_success]):
     print("Migration completed successfully!")
 else:
     print("Migration failed. Please check the logs above.")

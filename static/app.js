@@ -67,14 +67,70 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (sError) throw sError;
 
-            // 2. Supabase에서 단어 목록 가져오기
-            const { data: globalVocabs, error: vError } = await supabaseClient
-                .from('vocabularies')
+            // 2. Supabase에서 정규화된 사전 데이터 가져오기
+            const { data: lexiconData, error: lError } = await supabaseClient
+                .from('lexicon')
                 .select('*');
-            
-            if (vError) throw vError;
+            if (lError) throw lError;
 
-            // 3. 기존 코드와의 호환성을 위해 lectureData 구조로 매핑
+            const { data: examplesData, error: eError } = await supabaseClient
+                .from('examples')
+                .select('*');
+            if (eError) throw eError;
+
+            const { data: dialoguesData, error: dError } = await supabaseClient
+                .from('dialogues')
+                .select('*');
+            if (dError) throw dError;
+
+            // 3. 기존 코드와의 호환성을 위해 조립 (lexicon_instances 지원)
+            const globalVocabs = lexiconData.map(lex => {
+                const vocab = {
+                    id: lex.id,
+                    word: lex.lemma,
+                    meaning: lex.meaning,
+                    level: lex.level,
+                    english_definition: lex.english_definition,
+                    english_definition_translation: lex.english_definition_translation,
+                    example_groups: [],
+                    ab_dialogue: {}
+                };
+                
+                // Add examples
+                const relatedExamples = examplesData.filter(e => e.lexicon_id === lex.id);
+                if (relatedExamples.length > 0) {
+                    // Group by grammar_hint
+                    const groups = {};
+                    relatedExamples.forEach(ex => {
+                        const hint = ex.grammar_hint || "";
+                        if (!groups[hint]) groups[hint] = [];
+                        groups[hint].push({
+                            eng: ex.english_text,
+                            kor: ex.korean_text,
+                            tts_url: ex.tts_url
+                        });
+                    });
+                    
+                    vocab.example_groups = Object.keys(groups).map(hint => ({
+                        grammar_hint: hint,
+                        examples: groups[hint]
+                    }));
+                }
+
+                // Add dialogues
+                const dialogue = dialoguesData.find(d => d.lexicon_id === lex.id);
+                if (dialogue) {
+                    vocab.ab_dialogue = {
+                        dialogue_a: dialogue.speaker_a_eng,
+                        translation_a: dialogue.speaker_a_kor,
+                        dialogue_b: dialogue.speaker_b_eng,
+                        translation_b: dialogue.speaker_b_kor
+                    };
+                }
+
+                return vocab;
+            });
+
             lectureData = {
                 title: "동기 부여의 두 가지 유형",
                 sentences: sentences || [],
@@ -273,50 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setSR(STEP === 4 ? '따라 말하면 채점돼요 🎤' : '');
     }
 
-    // 표제어나 base_word를 문장 내 실제 텍스트 형태에 맞춰 찾아주는 헬퍼
-    function findHighlightRange(sentenceText, vocab) {
-        const text = sentenceText.toLowerCase();
-        
-        // 0. target_phrase가 존재하면 해당 텍스트 통째로 100% 매칭 시도 (우선순위 1위)
-        if (vocab.target_phrase) {
-            let target = vocab.target_phrase.toLowerCase();
-            let idx = text.indexOf(target);
-            if (idx >= 0) return { start: idx, length: target.length };
-        }
-
-        // 1. exact word match 먼저 매칭 시도 (예: "an end in itself")
-        let word = vocab.word.toLowerCase();
-        let cleanWord = vocab.word.replace(/\(.*?\)/g, '')
-                                  .replace(/to be\/do something/gi, '')
-                                  .replace(/to do something/gi, '')
-                                  .replace(/something/gi, '')
-                                  .trim().toLowerCase();
-        
-        let idx = text.indexOf(cleanWord);
-        if (idx >= 0) return { start: idx, length: cleanWord.length };
-
-        // 2. base_word가 있으면 그것으로 매칭 후 형태소(접미사) 경계 확장
-        if (vocab.base_word) {
-            let base = vocab.base_word.toLowerCase();
-            idx = text.indexOf(base);
-            if (idx >= 0) {
-                let endIdx = idx + base.length;
-                while (endIdx < text.length && /[a-zA-Z]/.test(text[endIdx])) {
-                    endIdx++;
-                }
-                
-                // 표제어에 'to be'가 포함되고 문장에서 단어 바로 뒤에 'to be'가 따라나오면 범위에 포함
-                const remainingText = text.slice(endIdx).trim();
-                if (vocab.word.includes('to be') && remainingText.startsWith('to be')) {
-                    const toBePos = text.indexOf('to be', endIdx);
-                    endIdx = toBePos + 5;
-                }
-                return { start: idx, length: endIdx - idx };
-            }
-        }
-        return null;
-    }
-
     function renderEN(sentence) {
         if (STEP === 3) {
             renderDictation(sentence);
@@ -324,18 +336,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const en = sentence.english_text;
-        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => (sentence.vocab_ids || []).includes(v.id));
+        const instances = sentence.lexicon_instances || [];
         
-        if (matchedVocabs.length === 0) {
+        if (instances.length === 0) {
             sen.innerHTML = esc(en);
             return;
         }
 
         let ranges = [];
-        matchedVocabs.forEach((v, idx) => {
-            const range = findHighlightRange(en, v);
-            if (range) {
-                ranges.push({ s: range.start, e: range.start + range.length, vocab: v, colorIdx: idx });
+        instances.forEach((inst, idx) => {
+            const t_phrase = inst.target_phrase;
+            if (!t_phrase) return;
+            const textLower = en.toLowerCase();
+            const phraseLower = t_phrase.toLowerCase().trim();
+            const startIdx = textLower.indexOf(phraseLower);
+            if (startIdx >= 0) {
+                ranges.push({
+                    s: startIdx,
+                    e: startIdx + phraseLower.length,
+                    vocabId: inst.lexicon_id,
+                    colorIdx: idx
+                });
             }
         });
 
@@ -351,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ranges.forEach(r => {
             if (r.s < last) return; // 오버랩 방지
             out += esc(en.slice(last, r.s));
-            out += `<span class="hl" data-vocab-id="${r.vocab.id}" style="color: ${getAccentColor(r.colorIdx)};">${esc(en.slice(r.s, r.e))}</span>`;
+            out += `<span class="hl" data-vocab-id="${r.vocabId}" style="color: ${getAccentColor(r.colorIdx)};">${esc(en.slice(r.s, r.e))}</span>`;
             last = r.e;
         });
         out += esc(en.slice(last));
@@ -396,18 +417,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     function renderDictation(sentence) {
         const en = sentence.english_text;
-        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => (sentence.vocab_ids || []).includes(v.id));
+        const instances = sentence.lexicon_instances || [];
 
-        if (matchedVocabs.length === 0) {
+        if (instances.length === 0) {
             sen.innerHTML = esc(en);
             return;
         }
 
         let ranges = [];
-        matchedVocabs.forEach(v => {
-            const range = findHighlightRange(en, v);
-            if (range) {
-                ranges.push({ s: range.start, e: range.start + range.length, word: en.slice(range.start, range.start + range.length) });
+        instances.forEach(inst => {
+            const t_phrase = inst.target_phrase;
+            if (!t_phrase) return;
+            const textLower = en.toLowerCase();
+            const phraseLower = t_phrase.toLowerCase().trim();
+            const startIdx = textLower.indexOf(phraseLower);
+            if (startIdx >= 0) {
+                ranges.push({
+                    s: startIdx,
+                    e: startIdx + phraseLower.length,
+                    word: en.slice(startIdx, startIdx + phraseLower.length)
+                });
             }
         });
 
@@ -509,7 +538,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => (sentence.vocab_ids || []).includes(v.id));
+        const instances = sentence.lexicon_instances || [];
+        const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => instances.some(inst => inst.lexicon_id === v.id));
         if (matchedVocabs.length === 0) {
             note.classList.remove('on');
             if (vocabTab) vocabTab.classList.add('hidden');
