@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rule.style.display = 'none';
 
         // 1. 번호 업데이트
-        num.textContent = sentence.index.toString().padStart(2, '0');
+        num.textContent = sentence.id.split('-')[2];
 
         // 2. 한글 자막 업데이트
         sko.textContent = sentence.korean_text || '';
