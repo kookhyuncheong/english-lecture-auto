@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: sentences, error: sError } = await supabaseClient
                 .from('sentence')
                 .select('*')
-                .order('index', { ascending: true });
+                .order('id', { ascending: true });
             
             if (sError) throw sError;
 
@@ -162,8 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     s.startSeconds = parseTimestampToSeconds(s.start_time);
                     s.endSeconds = parseTimestampToSeconds(s.end_time);
                     return {
-                        sid: `01-${s.index.toString().padStart(2, '0')}`,
-                        index: s.index,
+                        sid: s.id,
                         s: s.startSeconds,
                         e: s.endSeconds
                     };

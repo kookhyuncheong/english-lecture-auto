@@ -1,0 +1,138 @@
+[
+  {
+    "meta": {
+      "id": "aspire",
+      "uuid": "7a7fcb3c-26ce-43de-aeaf-e979b67256ab",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "908427d0-1199-4f88-8cc3-f978bc044607",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "aspire",
+        "aspires",
+        "aspired",
+        "aspiring"
+      ],
+      "app-shortdef": {
+        "hw": "aspire",
+        "fl": "verb",
+        "def": [
+          "{bc} to want to have or achieve something (such as a particular career or level of success)"
+        ]
+      },
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "as*pire",
+      "prs": [
+        {
+          "ipa": "əˈspajɚ",
+          "sound": {
+            "audio": "aspire01"
+          }
+        }
+      ]
+    },
+    "fl": "verb",
+    "ins": [
+      {
+        "ifc": "-pires",
+        "if": "as*pires"
+      },
+      {
+        "ifc": "-pired",
+        "if": "as*pired"
+      },
+      {
+        "ifc": "-pir*ing",
+        "if": "as*pir*ing"
+      }
+    ],
+    "gram": "no obj",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to want to have or achieve something (such as a particular career or level of success)"
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often + {it}to{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "Both young men {it}aspire to{/it} careers in medicine. [=both young men want to have careers in medicine]"
+                            },
+                            {
+                              "t": "She {it}aspires to{/it} a more active role in her government."
+                            },
+                            {
+                              "t": "people who {it}aspire to{/it} home ownership [=people who want to own their own homes]"
+                            }
+                          ]
+                        ]
+                      ],
+                      [
+                        [
+                          "text",
+                          "often followed by {it}to + verb{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "He says he never {it}aspired to become{/it} famous."
+                            },
+                            {
+                              "t": "little girls who {it}aspire to play{/it} professional basketball"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "uros": [
+      {
+        "ure": "aspiring",
+        "fl": "adjective",
+        "utxt": [
+          [
+            "vis",
+            [
+              {
+                "t": "an {it}aspiring{/it} actor [=a person who wants to be an actor]"
+              },
+              {
+                "t": "an {it}aspiring{/it} young writer"
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "to want to have or achieve something (such as a particular career or level of success)—often + to —often followed by to + verb"
+    ]
+  }
+]

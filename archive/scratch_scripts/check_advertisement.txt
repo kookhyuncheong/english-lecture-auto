@@ -1,0 +1,47 @@
+=== Last 15 Sentences in analysis.json ===
+
+Index 29: Psychologists call this phenomenon the overjustification effect.
+       Translation: 심리학자들은 이 현상을 과잉 정당화 효과라고 부릅니다.
+
+Index 30: The idea that additional extrinsic motivators can actually muddy the waters when you already have the intrinsic drive to do something.
+       Translation: 이미 무언가를 하려는 내재적 동기가 있을 때, 추가적인 외재적 동기 부여 요인이 오히려 상황을 혼란스럽게 만들 수 있다는 생각입니다.
+
+Index 31: But this is only a problem if you already find a task motivated.
+       Translation: 하지만 이것은 당신이 이미 어떤 과제에 동기 부여되어 있다고 느낄 때만 문제입니다.
+
+Index 32: When you're faced with an activity you find tedious or uninteresting, adding extrinsic rewards can be beneficial.
+       Translation: 지루하거나 흥미롭지 않다고 생각하는 활동에 직면했을 때는 외재적 보상을 추가하는 것이 유익할 수 있습니다.
+
+Index 33: In this way, extrinsic motivators can provide sufficient justification.
+       Translation: 이런 식으로 외재적 동기 부여 요인은 충분한 정당성을 제공할 수 있습니다.
+
+Index 34: While you may never enjoy doing the laundry, it may feel less daunting if you get praise from a loved one, or even promise yourself that you'll watch your favorite TV show when you're done folding.
+       Translation: 빨래하는 것을 결코 즐기지 않을 수도 있지만, 사랑하는 사람에게 칭찬을 받거나, 심지어 빨래를 다 개면 좋아하는 TV 프로그램을 보겠다고 자신에게 약속한다면 덜 부담스럽게 느껴질 수 있습니다.
+
+Index 35: Motivation is complicated.
+       Translation: 동기 부여는 복잡합니다.
+
+Index 36: And sometimes, no matter how passionate you are about a goal or hobby, finding the motivation to actually do it can be difficult.
+       Translation: 그리고 때로는 목표나 취미에 아무리 열정적이라 할지라도, 실제로 그것을 할 동기를 찾는 것은 어려울 수 있습니다.
+
+Index 37: But there are things you can do to increase your drive, even when it feels impossible.
+       Translation: 하지만 불가능하게 느껴질 때조차도 당신의 추진력을 높이기 위해 할 수 있는 일들이 있습니다.
+
+Index 38: Focus on building intrinsic motivation by making the task more fun in the moment.
+       Translation: 그 순간에 과제를 더 재미있게 만듦으로써 내재적 동기 부여를 구축하는 데 집중하세요.
+
+Index 39: Asking a friend to join you or simply putting on your favorite playlist can give you the boost to get started and stick with your goals for the long haul.
+       Translation: 친구에게 함께 하자고 요청하거나 단순히 좋아하는 플레이리스트를 틀어놓는 것만으로도 시작하는 데 필요한 활력을 주고, 장기적으로 목표를 고수하는 데 도움이 될 수 있습니다.
+
+Index 40: Another great tool is talking to yourself.
+       Translation: 또 다른 훌륭한 도구는 자신에게 말을 거는 것입니다.
+
+Index 41: That's right, self-talk can have a big impact on your life.
+       Translation: 맞습니다, 자기 대화는 당신의 삶에 큰 영향을 미칠 수 있습니다.
+
+Index 42: But how do you know if you're doing it right?
+       Translation: 하지만 당신이 그것을 제대로 하고 있는지 어떻게 알 수 있을까요?
+
+Index 43: Find out with this video, or visit ed.ted.com/buildcharacter for more actionable, science-based advice on how to build strengths of heart, mind, and will.
+       Translation: 이 비디오를 통해 알아보거나, ed.ted.com/buildcharacter를 방문하여 마음, 정신, 의지의 강점을 구축하는 방법에 대한 더 실행 가능하고 과학 기반의 조언을 얻으세요.
+

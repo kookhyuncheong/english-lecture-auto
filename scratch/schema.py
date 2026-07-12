@@ -40,7 +40,8 @@ class LexiconInstance(BaseModel):
     target_phrase: Optional[str] = None
 
 class Sentence(BaseModel):
-    index: int
+    id: str
+    video_id: str
     start_time: str
     end_time: str
     english_text: str

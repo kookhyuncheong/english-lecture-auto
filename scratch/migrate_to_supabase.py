@@ -123,7 +123,8 @@ for s in data.sentences:
             })
 
     sentences_to_upload.append({
-        "index": s.index,
+        "id": s.id,
+        "video_id": s.video_id,
         "start_time": s.start_time,
         "end_time": s.end_time,
         "english_text": s.english_text,

@@ -1,0 +1,796 @@
+[
+  {
+    "meta": {
+      "id": "loom:1",
+      "uuid": "4c8d651b-71a4-40d2-8c4f-d47bf5c069ae",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "63928689-8fa0-4eb0-a217-8b277385600d",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "loom",
+        "loomed",
+        "looming",
+        "looms",
+        "loom large",
+        "looms closer"
+      ],
+      "app-shortdef": {
+        "hw": "loom:1",
+        "fl": "verb",
+        "def": [
+          "{bc} to appear in a large, strange, or frightening form often in a sudden way {bc} to appear in an impressively large or great form",
+          "{bc} to be close to happening {bc} to be about to happen"
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "loom",
+      "prs": [
+        {
+          "ipa": "ˈluːm",
+          "sound": {
+            "audio": "loom0001"
+          }
+        }
+      ]
+    },
+    "fl": "verb",
+    "ins": [
+      {
+        "if": "looms"
+      },
+      {
+        "if": "loomed"
+      },
+      {
+        "if": "loom*ing"
+      }
+    ],
+    "gram": "no obj",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to appear in a large, strange, or frightening form often in a sudden way "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "A ship {it}loomed{/it} (up) out of the fog."
+                      },
+                      {
+                        "t": "Storm clouds {it}loomed{/it} on the horizon."
+                      }
+                    ]
+                  ],
+                  [
+                    "text",
+                    "{bc}to appear in an impressively large or great form "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The mountains {it}loom{/it} above/over the valley."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be close to happening {bc}to be about to happen"
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "used especially of unpleasant or frightening things "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "A workers' strike is {it}looming{/it}."
+                            },
+                            {
+                              "t": "A battle is {it}looming{/it} in Congress over the proposed budget cuts."
+                            },
+                            {
+                              "t": "a {it}looming{/it} battle/conflict/problem/storm"
+                            },
+                            {
+                              "t": "The deadline {phrase}looms closer{/phrase} with each passing day."
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "loom large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to have great importance or influence "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Rising tuition costs {it}loom large{/it} in the minds of many parents."
+                          },
+                          {
+                            "t": "She was a critic who {it}loomed large{/it} in literary circles."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortdef": [
+      "to appear in a large, strange, or frightening form often in a sudden way : to appear in an impressively large or great form",
+      "to be close to happening : to be about to happen—used especially of unpleasant or frightening things"
+    ]
+  },
+  {
+    "meta": {
+      "id": "loom:2",
+      "uuid": "dcff0555-92ec-496a-952b-0bf1ade41c77",
+      "src": "learners",
+      "section": "alpha",
+      "stems": [
+        "loom",
+        "looms"
+      ],
+      "app-shortdef": {
+        "hw": "loom:2",
+        "fl": "noun",
+        "def": [
+          "{bc} a frame or machine that is used to weave threads or yarns to produce cloth"
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 2,
+    "hwi": {
+      "hw": "loom",
+      "altprs": [
+        {
+          "ipa": "ˈluːm"
+        }
+      ]
+    },
+    "fl": "noun",
+    "ins": [
+      {
+        "il": "plural",
+        "if": "looms"
+      }
+    ],
+    "gram": "count",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}a frame or machine that is used to weave threads or yarns to produce cloth"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "artl": [
+      {
+        "artid": "loom.tif",
+        "capt": "loom",
+        "dim": "98.2,94.3"
+      }
+    ],
+    "shortdef": [
+      "a frame or machine that is used to weave threads or yarns to produce cloth"
+    ]
+  },
+  {
+    "meta": {
+      "id": "large:1",
+      "uuid": "ad9a6274-1343-4599-a841-118c5233a63b",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "90e9a6d5-c2fc-405c-8a45-31b2ee5f4a1b",
+        "tsrc": "collegiate"
+      },
+      "highlight": "yes",
+      "stems": [
+        "large",
+        "largeness",
+        "largenesses",
+        "larger",
+        "largest",
+        "largish",
+        "(as) large as life",
+        "as large as life",
+        "large as life",
+        "at large",
+        "bulk large",
+        "by and large",
+        "in large part",
+        "in large measure",
+        "larger than life",
+        "live large",
+        "loom large",
+        "to a large extent",
+        "writ large"
+      ],
+      "app-shortdef": {
+        "hw": "large:1",
+        "fl": "adjective",
+        "def": [
+          "{bc} great in size or amount",
+          "{bc} not limited in importance, range, etc."
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "large",
+      "prs": [
+        {
+          "ipa": "ˈlɑɚʤ",
+          "sound": {
+            "audio": "large001"
+          }
+        }
+      ]
+    },
+    "fl": "adjective",
+    "ins": [
+      {
+        "if": "larg*er"
+      },
+      {
+        "ifc": "-est",
+        "if": "larg*est"
+      }
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}great in size or amount {bc}{sx|big||} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "a {it}large{/it} room"
+                      },
+                      {
+                        "t": "a {it}large{/it} corporation"
+                      },
+                      {
+                        "t": "a {it}large{/it} glass of water"
+                      },
+                      {
+                        "t": "It's the {it}largest{/it} city in the state."
+                      },
+                      {
+                        "t": "It's the third {it}largest{/it} city in the state. [=there are two other cities that are larger]"
+                      },
+                      {
+                        "t": "These T-shirts are available in three sizes: small, medium, and {it}large{/it}."
+                      },
+                      {
+                        "t": "Which city has the {it}largest{/it} population?"
+                      },
+                      {
+                        "t": "Her policies are supported by a {it}large{/it} part/portion/percentage of the population."
+                      },
+                      {
+                        "t": "A {it}large{/it} number of workers have filed complaints."
+                      },
+                      {
+                        "t": "She used to be thin, but she's gotten a bit {it}large{/it} [=(less politely) {it}fat{/it}] in recent years."
+                      },
+                      {
+                        "t": "He's a very {it}large{/it} man. [=(usually) a tall and heavy man]"
+                      },
+                      {
+                        "t": "He has a very {it}large{/it} appetite."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}not limited in importance, range, etc. "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She's planning to play a {it}larger{/it} [=more active] role in the negotiations."
+                      },
+                      {
+                        "t": "We need to take a/the {it}large{/it} view of this issue. [=we need to look at this issue in a broad or general way]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "uros": [
+      {
+        "ure": "large*ness",
+        "fl": "noun",
+        "gram": "noncount",
+        "utxt": [
+          [
+            "vis",
+            [
+              {
+                "t": "the {it}largeness{/it} of the dog"
+              },
+              {
+                "t": "the {it}largeness{/it} of the population"
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "(as) large as life",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|life:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "at large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}not having been captured "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The criminal is still {it}at large{/it}. [={it}free{/it}]"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}as a group {bc}as a whole "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "His statements do not reflect the beliefs of the public {it}at large{/it}. [=the beliefs of most people]"
+                          },
+                          {
+                            "t": "society {it}at large{/it}"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "sls": [
+                      "US"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}not having a specific subject "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "a critic {it}at large{/it} [=a critic who writes about many different things]"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "4",
+                    "sls": [
+                      "US",
+                      "politics"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}representing a whole state or area rather than one of its parts"
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "used in combination with a preceding noun "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "a city councilor-{it}at-large{/it}"
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "bulk large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|bulk:3||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "by and large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|by:2||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "in large part",
+        "vrs": [
+          {
+            "vl": "or",
+            "va": "in large measure"
+          }
+        ],
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}not entirely but mostly {bc}{sx|largely||} "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The success of the play was {it}in large part{/it} due to the director."
+                          },
+                          {
+                            "t": "The economy is based {it}in large measure{/it} [={it}for the most part{/it}] on farming."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "larger than life",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}bigger than the size of an actual person or thing "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The statue is {it}larger than life{/it}."
+                          },
+                          {
+                            "t": "a {it}larger-than-life{/it} image"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "sls": [
+                      "of a person"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}having an unusually exciting, impressive, or appealing quality "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "My grandmother was a remarkable woman who always seemed {it}larger than life{/it} to me."
+                          },
+                          {
+                            "t": "a {it}larger-than-life{/it} hero"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "live large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|live:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "loom large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|loom:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "to a large extent",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|extent||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "writ large",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|writ:2||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortdef": [
+      "great in size or amount : big",
+      "not limited in importance, range, etc."
+    ]
+  }
+]

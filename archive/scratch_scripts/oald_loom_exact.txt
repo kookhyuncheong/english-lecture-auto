@@ -1,0 +1,35 @@
+# OALD Extracted Data for 'loom'
+verb
+CEFR: C1 (Oxford 5000)
+
+Sense 1:
+[intransitive]
+(+ adv./prep.)
+Definition: to appear as a large shape that is not clear, especially in a frightening way
+Examples:
+- A dark shape loomed up ahead of us.
+Extra Examples:
+- Ghostly shapes loomed out of the fog in front of him.
+- He loomed above her.
+- The tower loomed over the city.
+- A figure loomed in the doorway.
+- Dizzying walls of rock loomed on either side of them.
+- Something huge and black loomed out of the mist.
+
+Sense 2:
+[intransitive]
+(of something bad)
+Definition: to appear serious and likely to happen soon
+Examples:
+- There was a crisis looming.
+Extra Examples:
+- A new threat is now looming on the horizon.
+- Further problems loomed ahead of us.
+- The day of the election loomed ever closer.
+
+Idioms:
+loom large
+Definition: to be frightening and make you worried because something seems hard to avoid
+Examples:
+- The prospect of war loomed large.
+- The issue looms large in political campaigns nationwide.
