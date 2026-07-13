@@ -630,30 +630,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
+            const hasDetails = defHtml || examplesHtml || convHtml;
+            const expandBtnHtml = hasDetails ? `
+                <div class="vocab-expand-wrapper" style="text-align: center; margin-top: 15px; margin-bottom: 5px;">
+                    <button class="vocab-expand-btn">📖 예문 및 대화 보기 ▾</button>
+                </div>
+            ` : '';
+            const detailsHtml = hasDetails ? `
+                <div class="vocab-details hidden">
+                    ${defHtml}
+                    ${examplesHtml}
+                    ${convHtml}
+                </div>
+            ` : '';
+
             html.push(`
                 <div class="wnote hidden" id="wnote-${v.id}" data-ci="${idx}" style="border-top-color: ${accent}; --sticker: ${accent};">
                     <div class="hwline">
                         <div class="hw">${esc(v.base_word || v.word)}</div>
                     </div>
                     <div class="gloss">${esc(v.meaning)}</div>
-                    ${defHtml}
-                    ${examplesHtml}
-                    ${convHtml}
+                    ${expandBtnHtml}
+                    ${detailsHtml}
                 </div>
             `);
         });
 
-        if (noteContent) {
-            noteContent.innerHTML = html.join('');
-        } else {
-            note.innerHTML = html.join('');
-        }
+        const targetContainer = noteContent || note;
+        targetContainer.innerHTML = html.join('');
+        
+        // Add event listeners for expand buttons
+        const expandBtns = targetContainer.querySelectorAll('.vocab-expand-btn');
+        expandBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const wrapper = this.parentElement;
+                const details = wrapper.nextElementSibling;
+                if (details && details.classList.contains('vocab-details')) {
+                    const isHidden = details.classList.contains('hidden');
+                    if (isHidden) {
+                        details.classList.remove('hidden');
+                        this.innerHTML = '닫기 ▴';
+                        this.classList.add('active');
+                    } else {
+                        details.classList.add('hidden');
+                        this.innerHTML = '📖 예문 및 대화 보기 ▾';
+                        this.classList.remove('active');
+                    }
+                }
+            });
+        });
         
         // 자동으로 열리지 않고, 스크린샷과 시연을 위해 탭만 활성화되도록 변경
         // note.classList.add('on');
 
         // 첫 번째 카드는 기본으로 노출되도록 숨김 해제
-        const targetContainer = noteContent || note;
         const firstCard = targetContainer.querySelector('.wnote');
         if (firstCard) {
             firstCard.classList.remove('hidden');

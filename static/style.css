@@ -568,7 +568,63 @@ html, body {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Progressive Disclosure (Expand/Collapse) */
+.note .vocab-expand-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.note .vocab-expand-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(251, 249, 241, 0), rgba(251, 249, 241, 1));
+    pointer-events: none;
+}
+
+.note .vocab-expand-btn {
+    background: rgba(31, 95, 165, 0.05);
+    border: 1px solid rgba(31, 95, 165, 0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.7vw;
+    font-weight: 700;
+    color: var(--w1);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.note .vocab-expand-btn:hover {
+    background: var(--w1);
+    color: #ffffff;
+    border-color: var(--w1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(31, 95, 165, 0.15);
+}
+
+.note .vocab-details {
+    max-height: 1000px; /* generous height for animation */
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+    transform-origin: top;
+}
+
+.note .vocab-details.hidden {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: block !important; /* override default hidden to allow transition */
+}
+
 /* ==========================================================================
+
    Bottom Control Bar
    ========================================================================== */
 .shadowbar {
