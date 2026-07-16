@@ -534,7 +534,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderNotes(sentence) {
         if (STEP !== 2) {
             note.classList.remove('on');
-            if (vocabTab) vocabTab.classList.add('hidden');
+            const vTab = document.getElementById('vocab-tab');
+            if (vTab) vTab.classList.add('hidden');
             if (noteContent) noteContent.innerHTML = '';
             else note.innerHTML = '';
             return;
