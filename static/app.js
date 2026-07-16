@@ -575,31 +575,46 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // 브리태니커 스타일 예문 그룹 (grammar_hint 지원)
+            // 브리태니커 스타일 예문 그룹 (Carousel 적용)
             let examplesHtml = '';
             if (v.example_groups && v.example_groups.length > 0) {
+                const totalSlides = v.example_groups.length;
                 examplesHtml = `
-                    <div style="margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px;">
-                        ${v.example_groups.map(group => {
-                            const grammarHint = group.grammar_hint ? `
-                                <div class="grammar-hint" style="color: ${accent}; font-style: italic; font-weight: 700; margin-bottom: 6px; font-size: 0.95em;">
-                                    ${parseItalic(esc(group.grammar_hint))}
-                                </div>
-                            ` : '';
-                            
-                            const exList = group.examples ? group.examples.map(ex => `
-                                <div class="turn" style="margin-top: 5px; padding-left: 10px; border-left: 2px solid ${accent};">
-                                    <span class="ex-en">${parseItalic(esc(ex.eng))}</span><br>
-                                    <span class="ex-ko">${esc(ex.kor)}</span>
-                                </div>
-                            `).join('') : '';
+                    <div class="carousel-wrapper">
+                        <div class="carousel-container" id="carousel-${v.id}">
+                            ${v.example_groups.map(group => {
+                                const grammarHint = group.grammar_hint ? `
+                                    <div class="grammar-hint" style="color: ${accent}; font-style: italic; font-weight: 700; margin-bottom: 6px; font-size: 0.95em;">
+                                        ${parseItalic(esc(group.grammar_hint))}
+                                    </div>
+                                ` : '';
+                                
+                                const exList = group.examples ? group.examples.map(ex => `
+                                    <div class="turn" style="margin-top: 5px; padding-left: 10px; border-left: 2px solid ${accent};">
+                                        <span class="ex-en">${parseItalic(esc(ex.eng))}</span><br>
+                                        <span class="ex-ko">${esc(ex.kor)}</span>
+                                    </div>
+                                `).join('') : '';
 
-                            return `
-                                <div class="example-group" style="margin-top: 12px;">
-                                    ${grammarHint}
-                                    ${exList}
-                                </div>
-                            `;
-                        }).join('')}
+                                return `
+                                    <div class="carousel-slide">
+                                        <div class="example-group">
+                                            ${grammarHint}
+                                            ${exList}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        ${totalSlides > 1 ? `
+                        <div class="carousel-controls">
+                            <button class="carousel-btn prev-btn" data-target="carousel-${v.id}"><i class="fa-solid fa-chevron-left"></i></button>
+                            <div class="carousel-dots">
+                                ${Array.from({length: totalSlides}).map((_, i) => `<div class="carousel-dot ${i===0?'active':''}"></div>`).join('')}
+                            </div>
+                            <button class="carousel-btn next-btn" data-target="carousel-${v.id}"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        ` : ''}
                     </div>
                 `;
             }
@@ -609,9 +624,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (v.ab_dialogue && v.ab_dialogue.dialogue_a) {
                 const d = v.ab_dialogue;
                 convHtml = `
-                    <div class="conv" style="margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 12px;">
+                    <div class="conv" style="margin-top: 12px;">
                         <div class="convhead" style="color: ${accent}; font-weight: 600; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>💬 Dialogue Practice</span>
+                            <span>💬 실전 회화 연습</span>
                             ${(d.audio_path_a && d.audio_path_b) ? `<button class="dplay" data-audio-a="${esc(d.audio_path_a)}" data-audio-b="${esc(d.audio_path_b)}" style="background: ${accent}; color: white; border:none; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; cursor:pointer; font-weight:600;">▶ 듣기</button>` : ''}
                         </div>
                         <div class="dialogue-container" style="display:flex; flex-direction:column; gap:10px;">
@@ -630,16 +645,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            const hasDetails = defHtml || examplesHtml || convHtml;
-            const expandBtnHtml = hasDetails ? `
-                <div class="vocab-expand-wrapper" style="text-align: center; margin-top: 15px; margin-bottom: 5px;">
-                    <button class="vocab-expand-btn">📖 예문 및 대화 보기 ▾</button>
+            const hasDict = defHtml || examplesHtml;
+            const hasConv = !!convHtml;
+            
+            const tabsHtml = (hasDict || hasConv) ? `
+                <div class="vocab-tabs">
+                    ${hasDict ? `<button class="vocab-tab-btn" data-target="dict-${v.id}">📖 사전/예문</button>` : ''}
+                    ${hasConv ? `<button class="vocab-tab-btn" data-target="conv-${v.id}">💬 실전 회화</button>` : ''}
                 </div>
             ` : '';
-            const detailsHtml = hasDetails ? `
-                <div class="vocab-details hidden">
+            
+            const dictDetailsHtml = hasDict ? `
+                <div class="vocab-details" id="dict-${v.id}">
                     ${defHtml}
                     ${examplesHtml}
+                </div>
+            ` : '';
+            
+            const convDetailsHtml = hasConv ? `
+                <div class="vocab-details" id="conv-${v.id}">
                     ${convHtml}
                 </div>
             ` : '';
@@ -650,8 +674,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="hw">${esc(v.base_word || v.word)}</div>
                     </div>
                     <div class="gloss">${esc(v.meaning)}</div>
-                    ${expandBtnHtml}
-                    ${detailsHtml}
+                    ${tabsHtml}
+                    ${dictDetailsHtml}
+                    ${convDetailsHtml}
                 </div>
             `);
         });
@@ -659,24 +684,56 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetContainer = noteContent || note;
         targetContainer.innerHTML = html.join('');
         
-        // Add event listeners for expand buttons
-        const expandBtns = targetContainer.querySelectorAll('.vocab-expand-btn');
-        expandBtns.forEach(btn => {
+        // Add event listeners for tabs
+        const tabBtns = targetContainer.querySelectorAll('.vocab-tab-btn');
+        tabBtns.forEach(btn => {
             btn.addEventListener('click', function() {
-                const wrapper = this.parentElement;
-                const details = wrapper.nextElementSibling;
-                if (details && details.classList.contains('vocab-details')) {
-                    const isHidden = details.classList.contains('hidden');
-                    if (isHidden) {
-                        details.classList.remove('hidden');
-                        this.innerHTML = '닫기 ▴';
-                        this.classList.add('active');
-                    } else {
-                        details.classList.add('hidden');
-                        this.innerHTML = '📖 예문 및 대화 보기 ▾';
-                        this.classList.remove('active');
-                    }
+                const targetId = this.getAttribute('data-target');
+                const wnote = this.closest('.wnote');
+                const targetPanel = wnote.querySelector('#' + targetId);
+                
+                if (this.classList.contains('active')) {
+                    // 닫기 (토글 오프)
+                    this.classList.remove('active');
+                    targetPanel.classList.remove('active');
+                } else {
+                    // 다른 활성화된 탭들 끄기
+                    wnote.querySelectorAll('.vocab-tab-btn.active').forEach(b => b.classList.remove('active'));
+                    wnote.querySelectorAll('.vocab-details.active').forEach(p => p.classList.remove('active'));
+                    
+                    // 현재 탭 켜기
+                    this.classList.add('active');
+                    targetPanel.classList.add('active');
                 }
+            });
+        });
+
+        // Add event listeners for carousel arrows
+        targetContainer.querySelectorAll('.carousel-controls').forEach(control => {
+            const prevBtn = control.querySelector('.prev-btn');
+            const nextBtn = control.querySelector('.next-btn');
+            const dots = control.querySelectorAll('.carousel-dot');
+            const containerId = prevBtn.getAttribute('data-target');
+            const container = document.getElementById(containerId);
+            
+            if(!container) return;
+            
+            const updateDots = () => {
+                const slideWidth = container.clientWidth;
+                const scrollLeft = container.scrollLeft;
+                const activeIndex = Math.round(scrollLeft / slideWidth);
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === activeIndex);
+                });
+            };
+            
+            container.addEventListener('scroll', updateDots);
+            
+            prevBtn.addEventListener('click', () => {
+                container.scrollBy({ left: -container.clientWidth, behavior: 'smooth' });
+            });
+            nextBtn.addEventListener('click', () => {
+                container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
             });
         });
         

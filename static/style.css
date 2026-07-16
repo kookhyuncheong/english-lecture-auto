@@ -363,6 +363,17 @@ html, body {
     border-top: 5px solid var(--w1);
     transition: var(--transition-smooth);
     animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Hide scrollbar for .wnote on webkit */
+.wnote::-webkit-scrollbar {
+    width: 6px;
+}
+.wnote::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
 }
 
 @keyframes slideUp {
@@ -551,59 +562,112 @@ html, body {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Progressive Disclosure (Expand/Collapse) */
-.note .vocab-expand-wrapper {
-    position: relative;
-    z-index: 2;
-}
-
-.note .vocab-expand-wrapper::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background: linear-gradient(to bottom, rgba(251, 249, 241, 0), rgba(251, 249, 241, 1));
-    pointer-events: none;
-}
-
-.note .vocab-expand-btn {
+/* Tabs UI */
+.vocab-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    margin-bottom: 10px;
     background: rgba(31, 95, 165, 0.05);
-    border: 1px solid rgba(31, 95, 165, 0.15);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 0.7vw;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.vocab-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    border-radius: 8px;
+    font-size: 0.75vw;
     font-weight: 700;
+    color: var(--ink3);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.vocab-tab-btn.active {
+    background: #ffffff;
+    color: var(--w1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Details containers */
+.vocab-details {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+.vocab-details.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Carousel UI */
+.carousel-wrapper {
+    position: relative;
+    margin-top: 10px;
+    border-top: 1px dashed var(--line);
+    padding-top: 10px;
+}
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding-bottom: 10px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+.carousel-slide {
+    min-width: 100%;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+.carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+.carousel-btn {
+    background: rgba(31, 95, 165, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--w1);
     cursor: pointer;
     transition: var(--transition-smooth);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
-
-.note .vocab-expand-btn:hover {
+.carousel-btn:hover {
     background: var(--w1);
     color: #ffffff;
-    border-color: var(--w1);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(31, 95, 165, 0.15);
 }
-
-.note .vocab-details {
-    max-height: 1000px; /* generous height for animation */
-    opacity: 1;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out;
-    transform-origin: top;
+.carousel-dots {
+    display: flex;
+    gap: 4px;
 }
-
-.note .vocab-details.hidden {
-    max-height: 0;
-    opacity: 0;
-    margin: 0;
-    padding: 0;
-    border: none;
-    display: block !important; /* override default hidden to allow transition */
+.carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--line);
+    transition: var(--transition-smooth);
+}
+.carousel-dot.active {
+    background: var(--w1);
+    transform: scale(1.2);
 }
 
 /* ==========================================================================
