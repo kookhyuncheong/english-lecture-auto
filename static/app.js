@@ -565,46 +565,31 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // 브리태니커 스타일 예문 그룹 (grammar_hint 지원)
-            // 브리태니커 스타일 예문 그룹 (Carousel 적용)
             let examplesHtml = '';
             if (v.example_groups && v.example_groups.length > 0) {
-                const totalSlides = v.example_groups.length;
                 examplesHtml = `
-                    <div class="carousel-wrapper">
-                        <div class="carousel-container" id="carousel-${v.id}">
-                            ${v.example_groups.map(group => {
-                                const grammarHint = group.grammar_hint ? `
-                                    <div class="grammar-hint" style="color: ${accent}; font-style: italic; font-weight: 700; margin-bottom: 6px; font-size: 0.95em;">
-                                        ${parseItalic(esc(group.grammar_hint))}
-                                    </div>
-                                ` : '';
-                                
-                                const exList = group.examples ? group.examples.map(ex => `
-                                    <div class="turn" style="margin-top: 5px; padding-left: 10px; border-left: 2px solid ${accent};">
-                                        <span class="ex-en">${parseItalic(esc(ex.eng))}</span><br>
-                                        <span class="ex-ko">${esc(ex.kor)}</span>
-                                    </div>
-                                `).join('') : '';
+                    <div style="margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px;">
+                        ${v.example_groups.map(group => {
+                            const grammarHint = group.grammar_hint ? `
+                                <div class="grammar-hint" style="color: ${accent}; font-style: italic; font-weight: 700; margin-bottom: 6px; font-size: 0.95em;">
+                                    ${parseItalic(esc(group.grammar_hint))}
+                                </div>
+                            ` : '';
+                            
+                            const exList = group.examples ? group.examples.map(ex => `
+                                <div class="turn" style="margin-top: 5px; padding-left: 10px; border-left: 2px solid ${accent};">
+                                    <span class="ex-en">${parseItalic(esc(ex.eng))}</span><br>
+                                    <span class="ex-ko">${esc(ex.kor)}</span>
+                                </div>
+                            `).join('') : '';
 
-                                return `
-                                    <div class="carousel-slide">
-                                        <div class="example-group">
-                                            ${grammarHint}
-                                            ${exList}
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                        ${totalSlides > 1 ? `
-                        <div class="carousel-controls">
-                            <button class="carousel-btn prev-btn" data-target="carousel-${v.id}"><i class="fa-solid fa-chevron-left"></i></button>
-                            <div class="carousel-dots">
-                                ${Array.from({length: totalSlides}).map((_, i) => `<div class="carousel-dot ${i===0?'active':''}"></div>`).join('')}
-                            </div>
-                            <button class="carousel-btn next-btn" data-target="carousel-${v.id}"><i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                        ` : ''}
+                            return `
+                                <div class="example-group" style="margin-top: 12px;">
+                                    ${grammarHint}
+                                    ${exList}
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
                 `;
             }
@@ -698,35 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Add event listeners for carousel arrows
-        targetContainer.querySelectorAll('.carousel-controls').forEach(control => {
-            const prevBtn = control.querySelector('.prev-btn');
-            const nextBtn = control.querySelector('.next-btn');
-            const dots = control.querySelectorAll('.carousel-dot');
-            const containerId = prevBtn.getAttribute('data-target');
-            const container = document.getElementById(containerId);
-            
-            if(!container) return;
-            
-            const updateDots = () => {
-                const slideWidth = container.clientWidth;
-                const scrollLeft = container.scrollLeft;
-                const activeIndex = Math.round(scrollLeft / slideWidth);
-                dots.forEach((dot, idx) => {
-                    dot.classList.toggle('active', idx === activeIndex);
-                });
-            };
-            
-            container.addEventListener('scroll', updateDots);
-            
-            prevBtn.addEventListener('click', () => {
-                container.scrollBy({ left: -container.clientWidth, behavior: 'smooth' });
-            });
-            nextBtn.addEventListener('click', () => {
-                container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
-            });
-        });
-        
+
         // 자동으로 열리지 않고, 스크린샷과 시연을 위해 탭만 활성화되도록 변경
         // note.classList.add('on');
 

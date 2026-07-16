@@ -317,7 +317,8 @@ html, body {
 .note {
     position: absolute;
     right: 5%;
-    top: 10%;
+    top: auto;
+    bottom: 8%;
     width: 35%;
     max-width: 500px;
     background: transparent;
@@ -606,69 +607,7 @@ html, body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Carousel UI */
-.carousel-wrapper {
-    position: relative;
-    margin-top: 10px;
-    border-top: 1px dashed var(--line);
-    padding-top: 10px;
-}
-.carousel-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    gap: 15px;
-    padding-bottom: 10px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-.carousel-container::-webkit-scrollbar {
-    display: none;
-}
-.carousel-slide {
-    min-width: 100%;
-    scroll-snap-align: start;
-    flex-shrink: 0;
-}
-.carousel-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
-}
-.carousel-btn {
-    background: rgba(31, 95, 165, 0.1);
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--w1);
-    cursor: pointer;
-    transition: var(--transition-smooth);
-}
-.carousel-btn:hover {
-    background: var(--w1);
-    color: #ffffff;
-}
-.carousel-dots {
-    display: flex;
-    gap: 4px;
-}
-.carousel-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--line);
-    transition: var(--transition-smooth);
-}
-.carousel-dot.active {
-    background: var(--w1);
-    transform: scale(1.2);
-}
+
 
 /* ==========================================================================
 
