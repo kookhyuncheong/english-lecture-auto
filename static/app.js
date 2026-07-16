@@ -647,7 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ` : '';
 
             html.push(`
-                <div class="wnote hidden" id="wnote-${v.id}" data-ci="${idx}" style="border-top-color: ${accent}; --sticker: ${accent};">
+                <div class="wnote hidden" id="wnote-${v.id}" data-ci="${idx}" style="--sticker: ${accent};">
                     <div class="hwline">
                         <div class="hw">${esc(v.base_word || v.word)}</div>
                     </div>
