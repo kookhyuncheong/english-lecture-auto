@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chunk = document.getElementById('chunk');
     const note = document.getElementById('note');
     const noteContent = document.getElementById('noteContent');
-    const vocabTab = document.getElementById('vocabTab');
-    const noteClose = document.getElementById('noteClose');
     const listenBtn = document.getElementById('listen');
     const micBtn = document.getElementById('mic');
     const sresult = document.getElementById('sresult');
@@ -541,14 +539,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const matchedVocabs = (lectureData.global_vocab_list || []).filter(v => instances.some(inst => inst.lexicon_id === v.id));
         if (matchedVocabs.length === 0) {
             note.classList.remove('on');
-            if (vocabTab) vocabTab.classList.add('hidden');
             if (noteContent) noteContent.innerHTML = '';
             else note.innerHTML = '';
             return;
         }
 
-        // 매칭된 단어가 있으면 스티커 표시
-        if (vocabTab) vocabTab.classList.remove('hidden');
+
 
         let html = [];
         matchedVocabs.forEach((v, idx) => {
