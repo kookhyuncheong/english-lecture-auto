@@ -292,7 +292,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // UI 기본 청소
         const subCard = document.getElementById('sub-card');
-        if (subCard) subCard.style.opacity = '1'; // 자막 카드 보이기
+        if (subCard) {
+            subCard.style.opacity = '1'; // 자막 카드 보이기
+            subCard.classList.remove('shrink');
+        }
 
         note.classList.remove('on');
         if (noteContent) noteContent.innerHTML = '';
@@ -386,10 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (matchedCard) {
                     const isAlreadyOpen = note.classList.contains('on') && !matchedCard.classList.contains('hidden');
+                    const subCard = document.getElementById('sub-card');
                     if (isAlreadyOpen) {
                         note.classList.remove('on');
+                        if (subCard) subCard.classList.remove('shrink');
                     } else {
                         note.classList.add('on');
+                        if (subCard) subCard.classList.add('shrink');
                         targetCards.forEach(c => c.classList.add('hidden'));
                         matchedCard.classList.remove('hidden');
                     }
@@ -403,6 +409,8 @@ document.addEventListener('DOMContentLoaded', () => {
         noteClose.addEventListener('click', (e) => {
             e.stopPropagation();
             note.classList.remove('on');
+            const subCard = document.getElementById('sub-card');
+            if (subCard) subCard.classList.remove('shrink');
         });
     }
 
