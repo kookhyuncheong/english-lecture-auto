@@ -384,12 +384,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetCards = document.querySelectorAll('.wnote');
                 const matchedCard = document.getElementById(`wnote-${vocabId}`);
                 
-                // 단어장 열기
-                note.classList.add('on');
-                
                 if (matchedCard) {
-                    targetCards.forEach(c => c.classList.add('hidden'));
-                    matchedCard.classList.remove('hidden');
+                    const isAlreadyOpen = note.classList.contains('on') && !matchedCard.classList.contains('hidden');
+                    if (isAlreadyOpen) {
+                        note.classList.remove('on');
+                    } else {
+                        note.classList.add('on');
+                        targetCards.forEach(c => c.classList.add('hidden'));
+                        matchedCard.classList.remove('hidden');
+                    }
                 }
             });
         });

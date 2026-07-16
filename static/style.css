@@ -3,7 +3,7 @@
    ========================================================================== */
 :root {
     /* Color Palette */
-    --w1: #d99a2b; /* Yellow/Amber sticker & tag */
+    --w1: #1f5fa5; /* Blue sticker & tag */
     --w2: #1f8a82; /* Cyan/Teal */
     --w3: #c0445b; /* Pink/Ruby */
     --w4: #3f8a3f; /* Green */
@@ -547,20 +547,7 @@ html, body {
 
 /* Dialogue Bubble Animations */
 .note .dialogue-bubble {
-    animation: bubbleEnter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-}
-
-.note .bubble-a {
-    animation-delay: 0.1s;
-}
-
-.note .bubble-b {
-    animation-delay: 0.25s;
-}
-
-@keyframes bubbleEnter {
-    from { opacity: 0; transform: translateY(10px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    /* Animation removed per user request */
 }
 
 /* Tabs UI */
