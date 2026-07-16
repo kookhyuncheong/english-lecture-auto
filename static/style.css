@@ -228,7 +228,7 @@ html, body {
 
 .s-en {
     font-family: "Limelight", Georgia, serif;
-    font-size: 1.95vw;
+    font-size: 1.5vw;
     line-height: 1.35;
     color: var(--ink);
 }
@@ -252,7 +252,7 @@ html, body {
 }
 
 .s-ko {
-    font-size: 1.05vw;
+    font-size: 1.0vw;
     line-height: 1.5;
     color: var(--ink2);
     margin-top: 0.6em;
@@ -266,7 +266,7 @@ html, body {
 }
 
 .chunk {
-    font-size: 0.9vw;
+    font-size: 1.0vw;
     line-height: 1.55;
 }
 
@@ -404,7 +404,7 @@ html, body {
 
 .note .hw {
     font-family: "Limelight", Georgia, serif;
-    font-size: 1.4vw;
+    font-size: 1.5vw;
     color: var(--ink);
 }
 
@@ -421,7 +421,7 @@ html, body {
 }
 
 .note .gloss {
-    font-size: 0.95vw;
+    font-size: 1.0vw;
     color: var(--ink);
     font-weight: 700;
     margin-top: 0.2em;
@@ -435,14 +435,14 @@ html, body {
 }
 
 .note .def {
-    font-size: 0.8vw;
+    font-size: 1.0vw;
     color: var(--ink);
     line-height: 1.4;
     margin-top: 0.6vw;
 }
 
 .note .defko {
-    font-size: 0.75vw;
+    font-size: 0.9vw;
     color: var(--ink2);
     line-height: 1.4;
     margin-top: 2px;
@@ -513,7 +513,7 @@ html, body {
 }
 
 .note .turn {
-    font-size: 0.76vw;
+    font-size: 1.0vw;
     line-height: 1.45;
     margin-top: 0.4vw;
 }
