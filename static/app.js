@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chunk = document.getElementById('chunk');
     const note = document.getElementById('note');
     const noteContent = document.getElementById('noteContent');
+    const noteClose = document.getElementById('noteClose');
     const listenBtn = document.getElementById('listen');
     const micBtn = document.getElementById('mic');
     const sresult = document.getElementById('sresult');
@@ -294,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (subCard) subCard.style.opacity = '1'; // 자막 카드 보이기
 
         note.classList.remove('on');
-        if (vocabTab) vocabTab.classList.add('hidden');
         if (noteContent) noteContent.innerHTML = '';
         else note.innerHTML = '';
         chunk.innerHTML = '';
@@ -395,17 +395,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 단어장 서랍 토글 이벤트 등록
-    if (vocabTab && noteClose) {
-        vocabTab.addEventListener('click', (e) => {
-            e.stopPropagation();
-            note.classList.add('on');
-            vocabTab.classList.add('hidden');
-        });
+    // 단어장 서랍 닫기 이벤트 등록
+    if (noteClose) {
         noteClose.addEventListener('click', (e) => {
             e.stopPropagation();
             note.classList.remove('on');
-            vocabTab.classList.remove('hidden');
         });
     }
 
